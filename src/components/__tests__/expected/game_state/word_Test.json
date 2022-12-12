@@ -1,0 +1,58 @@
+[{
+"correctLetters": [],
+"currentWord": [
+"_",
+"_",
+"_",
+"_"
+],
+"guessLimit": 10,
+"hasFinished": false,
+"hasWon": false,
+"incorrectGueeses": 0,
+"incorrectLetters": []
+}
+,{
+    "correctLetters": ["e"],
+    "currentWord": [
+    "_",
+    "e",
+    "_",
+    "_"
+    ],
+    "guessLimit": 10,
+    "hasFinished": false,
+    "hasWon": false,
+    "incorrectGueeses": 0,
+    "incorrectLetters": []
+}
+,{
+    "correctLetters": ["t"],
+    "currentWord": [
+    "T",
+    "_",
+    "_",
+    "t"
+    ],
+    "guessLimit": 10,
+    "hasFinished": false,
+    "hasWon": false,
+    "incorrectGueeses": 0,
+    "incorrectLetters": []
+}
+,{
+    "correctLetters": [],
+    "currentWord": [
+    "_",
+    "_",
+    "_",
+    "_"
+    ],
+    "guessLimit": 10,
+    "hasFinished": false,
+    "hasWon": false,
+    "incorrectGueeses": 1,
+    "incorrectLetters": ["a"]
+}
+
+]

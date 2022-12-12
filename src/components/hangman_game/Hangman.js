@@ -111,7 +111,8 @@ export default class Hangman {
         );
     }
 
-    MakeAGuess(character){
+    MakeAGuess(letterToCheck){
+        let character = letterToCheck.toLowerCase();
         //Don't do anything if character has already been guessed
         if(this.GetArrOfAllGuessedLetters().includes(character)){
             return;
