@@ -10,16 +10,14 @@ import RandomWordGenerator from "./components/data_fetch/RandomWordGenerator";
 import FetchDefinition from "./components/data_fetch/FetchDefinition";
 
 function App() {
-  console.log(process.env.REACT_APP_API_NINJAS_API_KEY);
-
   return (
     <div className="App">
       <header>
         <p>Hangman Game App</p>
-        <ThemeSelector/>
+        <ThemeSelector />
       </header>
       <div className="HangmanGame">
-        <Word/>
+        <Word />
         <HangmanImage />
         <OnScreenKeyboard />
       </div>
