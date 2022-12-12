@@ -1,0 +1,30 @@
+[{
+"correctLetters": [],
+"currentWord": [
+"_",
+"_",
+"_",
+"_"
+],
+"guessLimit": 10,
+"hasFinished": false,
+"hasWon": false,
+"incorrectGueeses": 0,
+"incorrectLetters": []
+},
+{
+    "correctLetters": ["t"],
+    "currentWord": [
+    "T",
+    "_",
+    "_",
+    "t"
+    ],
+    "guessLimit": 10,
+    "hasFinished": false,
+    "hasWon": false,
+    "incorrectGueeses": 0,
+    "incorrectLetters": []
+    }
+
+]
