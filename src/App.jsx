@@ -19,7 +19,9 @@ function App() {
       <div className="HangmanGame">
         <Word />
         <HangmanImage />
-        <OnScreenKeyboard />
+        <div className="keyboard-div">
+          <OnScreenKeyboard />
+        </div>
       </div>
     </div>
   );

@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.keyboard-div {
+  min-width: min-content;
+  max-width: max-content;
+  margin: auto;
+  height: 15rem;
+}
