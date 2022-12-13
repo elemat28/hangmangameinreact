@@ -1,17 +1,11 @@
 import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { themes } from "../themes";
 import SettingsBrightnessTwoToneIcon from "@mui/icons-material/SettingsBrightnessTwoTone";
 import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightnessOutlined";
-import AbcIcon from "@mui/icons-material/Abc";
 import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 
 function ThemeSelector({ themeToggleCallback }) {
   const theme = useTheme();
