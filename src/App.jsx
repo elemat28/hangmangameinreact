@@ -13,16 +13,26 @@ import { useState } from "react";
 import RandomWordGenerator from "./components/data_fetch/RandomWordGenerator";
 import FetchDefinition from "./components/data_fetch/FetchDefinition";
 import ThemeSelector from "./components/user_interface/general/ThemeSelector";
+import { themes } from "./components/user_interface/themes";
 
 function App() {
-  let userTheme = ResolveThemeToUse();
+  const [theme, setTheme] = React.useState(ResolveThemeToUse());
+  const handleChange = (event) => {
+    if (theme === themes.light) {
+      setTheme(themes.dark);
+    } else {
+      setTheme(themes.light);
+    }
+
+    console.debug(event);
+  };
   return (
     <div className="App">
-      <ThemeProvider theme={userTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
           <p>Hangman Game App</p>
-          <ThemeSelector />
+          <ThemeSelector themeToggleCallback={handleChange} />
         </header>
         <main>
           <div className="HangmanGame">
