@@ -1,45 +1,64 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import "./OnScreenKeyboard.css";
-function OnScreenKeyboard() {
+
+function OnScreenKeyboard({ spaceButton, buttonUseFunction }) {
+  function keyboardButton(character, onClick, disabled = false) {
+    return (
+      <Button
+        variant="contained"
+        id={`osk_button_${character}`}
+        disabled={disabled}
+        onClick={(event) => onClick(event, character)}
+      >
+        {character}
+      </Button>
+    );
+  }
   return (
     <div className="on-screen-keyboard">
       <div className="keyboard-row">
-        <Button variant="contained">Q</Button>
-        <Button variant="contained">W</Button>
-        <Button variant="contained">E</Button>
-        <Button variant="contained">R</Button>
-        <Button variant="contained">T</Button>
-        <Button variant="contained">Y</Button>
-        <Button variant="contained">U</Button>
-        <Button variant="contained">I</Button>
-        <Button variant="contained">O</Button>
-        <Button variant="contained">P</Button>
+        {keyboardButton("q", buttonUseFunction)}
+        {keyboardButton("w", buttonUseFunction)}
+        {keyboardButton("e", buttonUseFunction)}
+        {keyboardButton("r", buttonUseFunction)}
+        {keyboardButton("t", buttonUseFunction)}
+        {keyboardButton("y", buttonUseFunction)}
+        {keyboardButton("u", buttonUseFunction)}
+        {keyboardButton("i", buttonUseFunction)}
+        {keyboardButton("o", buttonUseFunction)}
+        {keyboardButton("p", buttonUseFunction)}
       </div>
       <div className="keyboard-row">
-        <Button variant="contained">A</Button>
-        <Button variant="contained">S</Button>
-        <Button variant="contained">F</Button>
-        <Button variant="contained">G</Button>
-        <Button variant="contained">H</Button>
-        <Button variant="contained">J</Button>
-        <Button variant="contained">K</Button>
-        <Button variant="contained">L</Button>
+        {keyboardButton("a", buttonUseFunction)}
+        {keyboardButton("s", buttonUseFunction)}
+        {keyboardButton("d", buttonUseFunction)}
+        {keyboardButton("f", buttonUseFunction)}
+        {keyboardButton("g", buttonUseFunction)}
+        {keyboardButton("h", buttonUseFunction)}
+        {keyboardButton("j", buttonUseFunction)}
+        {keyboardButton("k", buttonUseFunction)}
+        {keyboardButton("l", buttonUseFunction)}
       </div>
       <div className="keyboard-row">
-        <Button variant="contained">Z</Button>
-        <Button variant="contained">X</Button>
-        <Button variant="contained">C</Button>
-        <Button variant="contained">V</Button>
-        <Button variant="contained">B</Button>
-        <Button variant="contained">N</Button>
-        <Button variant="contained">M</Button>
+        {keyboardButton("z", buttonUseFunction)}
+        {keyboardButton("x", buttonUseFunction)}
+        {keyboardButton("c", buttonUseFunction)}
+        {keyboardButton("v", buttonUseFunction)}
+        {keyboardButton("b", buttonUseFunction)}
+        {keyboardButton("n", buttonUseFunction)}
+        {keyboardButton("m", buttonUseFunction)}
       </div>
-      <div className="keyboard-row keyboard-space">
-        <Button variant="contained"></Button>
-      </div>
+      {spaceButton ? (
+        <div className="keyboard-space">
+          <Button variant="contained" title="space_button"></Button>
+        </div>
+      ) : null}
     </div>
   );
 }
+OnScreenKeyboard.defaultProps = {
+  spaceButton: false,
+};
 
 export default OnScreenKeyboard;

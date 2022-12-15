@@ -14,11 +14,18 @@
   flex: 1;
 }
 .keyboard-space {
+  display: flex;
+  flex-wrap: nowrap;
   flex: 1.25;
   margin-top: 0.1em;
 }
 
 .keyboard-row button {
+  width: 100%;
+  color: white;
+}
+
+.keyboard-space button {
   width: 100%;
   color: white;
 }

@@ -16,29 +16,33 @@ import { themes } from "./components/user_interface/themes";
 
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
-  const handleChange = (event) => {
+  const handleThemeChange = (event) => {
     if (theme === themes.light) {
       setTheme(themes.dark);
     } else {
       setTheme(themes.light);
     }
-
     console.debug(event);
   };
+
+  const handleButton = (event, character) => {
+    console.debug(character);
+  };
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header>
           <p>Hangman Game App</p>
-          <ThemeSelector themeToggleCallback={handleChange} />
+          <ThemeSelector themeToggleCallback={handleThemeChange} />
         </header>
         <main>
           <div className="HangmanGame">
             <Word />
             <HangmanImage />
             <div className="keyboard-div">
-              <OnScreenKeyboard />
+              <OnScreenKeyboard buttonUseFunction={handleButton} />
             </div>
           </div>
         </main>
