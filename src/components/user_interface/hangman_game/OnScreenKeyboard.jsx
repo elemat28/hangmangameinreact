@@ -2,53 +2,53 @@ import React from "react";
 import Button from "@mui/material/Button";
 import "./OnScreenKeyboard.css";
 
-function OnScreenKeyboard({ spaceButton, buttonUseFunction }) {
-  function keyboardButton(character, onClick, disabled = false) {
+function OnScreenKeyboard({
+  spaceButton,
+  buttonUseFunction,
+  disabledButtonsArr,
+}) {
+  const keysByRow = [
+    ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+    ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+    ["z", "x", "c", "v", "b", "n", "m"],
+  ];
+  function keyboardButton({ character, onClick, key }) {
     return (
       <Button
         variant="contained"
         id={`osk_button_${character}`}
-        disabled={disabled}
-        onClick={(event) => onClick(event, character)}
+        disabled={disabledButtonsArr.includes(character)}
+        onClick={(event) => {
+          onClick(event, character);
+          console.debug(disabledButtonsArr);
+        }}
+        key={key ? key : null}
       >
         {character}
       </Button>
     );
   }
+
+  function addRow(keysInRow) {
+    let row = [];
+
+    keysInRow.forEach((element) => {
+      row.push(
+        keyboardButton({
+          character: element,
+          onClick: buttonUseFunction,
+          key: keysInRow.indexOf(element),
+        })
+      );
+    });
+
+    return row;
+  }
   return (
     <div className="on-screen-keyboard">
-      <div className="keyboard-row">
-        {keyboardButton("q", buttonUseFunction)}
-        {keyboardButton("w", buttonUseFunction)}
-        {keyboardButton("e", buttonUseFunction)}
-        {keyboardButton("r", buttonUseFunction)}
-        {keyboardButton("t", buttonUseFunction)}
-        {keyboardButton("y", buttonUseFunction)}
-        {keyboardButton("u", buttonUseFunction)}
-        {keyboardButton("i", buttonUseFunction)}
-        {keyboardButton("o", buttonUseFunction)}
-        {keyboardButton("p", buttonUseFunction)}
-      </div>
-      <div className="keyboard-row">
-        {keyboardButton("a", buttonUseFunction)}
-        {keyboardButton("s", buttonUseFunction)}
-        {keyboardButton("d", buttonUseFunction)}
-        {keyboardButton("f", buttonUseFunction)}
-        {keyboardButton("g", buttonUseFunction)}
-        {keyboardButton("h", buttonUseFunction)}
-        {keyboardButton("j", buttonUseFunction)}
-        {keyboardButton("k", buttonUseFunction)}
-        {keyboardButton("l", buttonUseFunction)}
-      </div>
-      <div className="keyboard-row">
-        {keyboardButton("z", buttonUseFunction)}
-        {keyboardButton("x", buttonUseFunction)}
-        {keyboardButton("c", buttonUseFunction)}
-        {keyboardButton("v", buttonUseFunction)}
-        {keyboardButton("b", buttonUseFunction)}
-        {keyboardButton("n", buttonUseFunction)}
-        {keyboardButton("m", buttonUseFunction)}
-      </div>
+      <div className="keyboard-row">{addRow(keysByRow[0])}</div>
+      <div className="keyboard-row">{addRow(keysByRow[1])}</div>
+      <div className="keyboard-row">{addRow(keysByRow[2])}</div>
       {spaceButton ? (
         <div className="keyboard-space">
           <Button variant="contained" title="space_button"></Button>
@@ -59,6 +59,7 @@ function OnScreenKeyboard({ spaceButton, buttonUseFunction }) {
 }
 OnScreenKeyboard.defaultProps = {
   spaceButton: false,
+  disabledButtonsArr: [],
 };
 
 export default OnScreenKeyboard;

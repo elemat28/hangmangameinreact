@@ -16,22 +16,37 @@ import { themes } from "./components/user_interface/themes";
 
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
+
+  //toDo: generate word from API
   let debugWord = "Test";
   console.debug(`Word of the game: ${debugWord}`);
-  const hangmanGame = new Hangman(debugWord);
+
+  const [hangmanInstance, setHangmanInstance] = React.useState(
+    new Hangman(debugWord)
+  );
+  const [gameState, setGameState] = React.useState(
+    hangmanInstance.GetCurrentGameState()
+  );
+
+  const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
+    []
+  );
+
   const handleThemeChange = (event) => {
     if (theme === themes.light) {
       setTheme(themes.dark);
     } else {
       setTheme(themes.light);
     }
-    console.debug(event);
   };
 
   const handleButton = (event, character) => {
     console.debug(character);
-    hangmanGame.MakeAGuess(character);
-    console.debug(hangmanGame.GetCurrentGameState());
+    hangmanInstance.MakeAGuess(character);
+    console.debug(hangmanInstance.GetCurrentGameState());
+    setGameState(hangmanInstance.GetCurrentGameState());
+    setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
+    console.log(event);
   };
 
   return (
@@ -44,10 +59,13 @@ function App() {
         </header>
         <main>
           <div className="HangmanGame">
-            <Word />
-            <HangmanImage />
+            <Word arrayOfCharacters={gameState.currentWord} />
+            <HangmanImage NumberOfLinesToDraw={gameState.incorrectGueeses} />
             <div className="keyboard-div">
-              <OnScreenKeyboard buttonUseFunction={handleButton} />
+              <OnScreenKeyboard
+                buttonUseFunction={handleButton}
+                disabledButtonsArr={disabledKeyboardButtons}
+              />
             </div>
           </div>
         </main>

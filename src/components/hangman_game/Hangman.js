@@ -1,7 +1,7 @@
 
 export default class Hangman {
-    constructor(wordToGuess){
-        if (typeof(wordToGuess) != "string"){
+    constructor(wordToGuess) {
+        if (typeof (wordToGuess) != "string") {
             throw new Error("Text argument required");
         }
         this.word = wordToGuess;
@@ -13,116 +13,117 @@ export default class Hangman {
 
     }
 
-    #IsCharInWord(character){
+    #IsCharInWord(character) {
         return (
             this.word.includes(character)
-            );
+        );
     }
 
-    GetTotalNumOfGuesses(){
-        return(
+    GetTotalNumOfGuesses() {
+        return (
             this.correctGuesses.length + this.incorrectGuesses.length
         )
     }
-    
-    GetWrongGuessLimit(){
-        return(
+
+    GetWrongGuessLimit() {
+        return (
             this.wrongGuessLimit
-            )
+        )
     }
 
-    SetWrongGuessLimit(newLimit){
-        if(this.GetTotalNumOfGuesses() > 0) {
-            throw new Error( "Can't change game settings after the game starts!");
+    SetWrongGuessLimit(newLimit) {
+        if (this.GetTotalNumOfGuesses() > 0) {
+            throw new Error("Can't change game settings after the game starts!");
         }
-        if (!Number.isInteger(newLimit)){
+        if (!Number.isInteger(newLimit)) {
             throw new Error("Only integers are accepted");
         }
-        if(newLimit < 1){
-            throw new Error( "User has to have at least 1 chance!");
+        if (newLimit < 1) {
+            throw new Error("User has to have at least 1 chance!");
         }
         this.wrongGuessLimit = newLimit;
     }
 
-    GetNumOfIncorrectGuesses(){
-        return(
+    GetNumOfIncorrectGuesses() {
+        return (
             this.incorrectGuesses.length
         )
     }
-    
-    GetArrOfCorrectLetters(){
-        return(
+
+    GetArrOfCorrectLetters() {
+        return (
             this.correctGuesses
         )
     }
 
-    GetArrOfIncorrectLetters(){
-        return(
+    GetArrOfIncorrectLetters() {
+        return (
             this.incorrectGuesses
         )
     }
 
-    GetArrOfAllGuessedLetters(){
+    GetArrOfAllGuessedLetters() {
         let allGuesses = this.incorrectGuesses.concat(this.correctGuesses).sort();
         return (
             allGuesses
         )
     }
 
-    GetCurrentWord(){
+    GetCurrentWord() {
         let stateOfWord = [];
 
         for (let index = 0; index < this.word.length; index++) {
-            if (this.correctGuesses.includes((this.word.toLowerCase())[index])){
+            if (this.correctGuesses.includes((this.word.toLowerCase())[index])) {
                 stateOfWord.push(this.word[index]);
             } else {
                 stateOfWord.push("_");
             }
-            
+
         }
-        return(
+        return (
             stateOfWord
         );
     }
 
-    #UpdateState(){
-        if(this.incorrectGuesses.length >= this.wrongGuessLimit){
+    #UpdateState() {
+        if (this.incorrectGuesses.length >= this.wrongGuessLimit) {
             this.hasFinished = true;
             return;
         }
-        if(this.GetCurrentWord().indexOf("_") === -1){
+        if (this.GetCurrentWord().indexOf("_") === -1) {
             this.hasWon = true;
             this.hasFinished = true;
         }
     }
 
-    GetCurrentGameState(){
+    GetCurrentGameState() {
         let gameState = {
             hasFinished: this.hasFinished
-            ,hasWon: this.hasWon
-            ,currentWord: this.GetCurrentWord()
-            ,guessLimit: this.GetWrongGuessLimit()
-            ,incorrectGueeses: this.GetNumOfIncorrectGuesses()
-            ,correctLetters: this.GetArrOfCorrectLetters()
-            ,incorrectLetters: this.GetArrOfIncorrectLetters()
+            , hasWon: this.hasWon
+            , currentWord: this.GetCurrentWord()
+            , guessLimit: this.GetWrongGuessLimit()
+            , incorrectGueeses: this.GetNumOfIncorrectGuesses()
+            , correctLetters: this.GetArrOfCorrectLetters()
+            , incorrectLetters: this.GetArrOfIncorrectLetters()
+            , allGuessedLetters: this.GetArrOfAllGuessedLetters()
         }
-        return(
+        return (
             gameState
         );
     }
 
-    MakeAGuess(letterToCheck){
+    MakeAGuess(letterToCheck) {
         let character = letterToCheck.toLowerCase();
         //Don't do anything if character has already been guessed
-        if(this.GetArrOfAllGuessedLetters().includes(character)){
+        if (this.GetArrOfAllGuessedLetters().includes(character)) {
             return;
         }
 
-        if(this.hasFinished){
+        if (this.hasFinished) {
             return;
         }
 
-        if(this.#IsCharInWord(character)){
+        if (this.#IsCharInWord(character)) {
             this.correctGuesses.push(character.toLowerCase());
             this.correctGuesses.sort();
         }
