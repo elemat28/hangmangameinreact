@@ -60,7 +60,10 @@ function App() {
         <main>
           <div className="HangmanGame">
             <Word arrayOfCharacters={gameState.currentWord} />
-            <HangmanImage NumberOfLinesToDraw={gameState.incorrectGueeses} />
+            <HangmanImage
+              NumberOfLinesToDraw={gameState.incorrectGueeses}
+              heightPx={400}
+            />
             <div className="keyboard-div">
               <OnScreenKeyboard
                 buttonUseFunction={handleButton}

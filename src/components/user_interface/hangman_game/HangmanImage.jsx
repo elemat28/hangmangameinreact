@@ -1,81 +1,92 @@
+import { Scale } from "@mui/icons-material";
 import React from "react";
 
-function HangmanImage({ NumberOfLinesToDraw = 0 }) {
+function HangmanImage({ NumberOfLinesToDraw, heightPx }) {
+  let height = heightPx;
+  let width = height * (2 / 3);
   React.useEffect(() => {
     var c = document.getElementById("hangmanCanvas");
     var ctx = c.getContext("2d");
     ctx.beginPath();
     //STAND, LEFT -> right
     if (NumberOfLinesToDraw === 1) {
-      ctx.moveTo(200, 550);
-      ctx.lineTo(400, 550);
+      ctx.moveTo(0.5 * width, height * (550 / 600));
+      ctx.lineTo(width, height * (550 / 600));
       ctx.stroke();
     }
     //pole
     if (NumberOfLinesToDraw === 2) {
-      ctx.moveTo(300, 550);
-      ctx.lineTo(300, 50);
+      ctx.moveTo(width * 0.75, height * (550 / 600));
+      ctx.lineTo(width * 0.75, height * (50 / 600));
       ctx.stroke();
     }
     //overhead
     if (NumberOfLinesToDraw === 3) {
-      ctx.lineTo(150, 50);
+      ctx.moveTo(width * 0.75, height * (50 / 600));
+      ctx.lineTo(width * (225 / 600), height * (50 / 600));
       ctx.stroke();
     }
     //attachment point
     if (NumberOfLinesToDraw === 4) {
-      ctx.lineTo(150, 100);
+      ctx.moveTo(width * (225 / 600), height * (50 / 600));
+      ctx.lineTo(width * (225 / 600), height * (100 / 600));
       ctx.stroke();
     }
     //start drawing person
     //head
     if (NumberOfLinesToDraw === 5) {
       ctx.beginPath();
-      ctx.arc(150, 150, 50, 0, 2 * Math.PI);
+
+      ctx.arc(
+        width * (225 / 600),
+        height * (150 / 600),
+        (1 / 12) * height,
+        0,
+        2 * Math.PI
+      );
       ctx.stroke();
     }
     //torso
     if (NumberOfLinesToDraw === 6) {
-      ctx.moveTo(150, 200);
-      ctx.lineTo(150, 350);
+      ctx.moveTo(width * (225 / 600), height * (150 / 600) + (1 / 12) * height);
+      ctx.lineTo(width * (225 / 600), (height * 375) / 600);
       ctx.stroke();
     }
     //left leg
     if (NumberOfLinesToDraw === 7) {
-      ctx.lineTo(100, 450);
+      ctx.moveTo(width * (225 / 600), (height * 375) / 600);
+      ctx.lineTo(width * (150 / 600), height * (450 / 600));
       ctx.stroke();
     }
     //right leg
     if (NumberOfLinesToDraw === 8) {
-      ctx.moveTo(150, 350);
-      ctx.lineTo(200, 450);
+      ctx.moveTo(width * (225 / 600), (height * 375) / 600);
+      ctx.lineTo(width * (300 / 600), height * (450 / 600));
       ctx.stroke();
     }
     //left hand
     if (NumberOfLinesToDraw === 9) {
-      ctx.moveTo(150, 225);
-      ctx.lineTo(110, 320);
+      ctx.moveTo(width * (225 / 600), height * (180 / 600) + (1 / 12) * height);
+      ctx.lineTo(width * (175 / 600), height * (325 / 600));
       ctx.stroke();
     }
     //right hand
     if (NumberOfLinesToDraw === 10) {
-      ctx.moveTo(150, 225);
-      ctx.lineTo(190, 320);
+      ctx.moveTo(width * (225 / 600), height * (180 / 600) + (1 / 12) * height);
+      ctx.lineTo(width * (275 / 600), height * (325 / 600));
       ctx.stroke();
     }
-  }, [NumberOfLinesToDraw]);
+  }, [NumberOfLinesToDraw, height, width]);
 
   return (
-    <div>
-      <canvas
-        id="hangmanCanvas"
-        width="400px"
-        height="600px"
-        style={{ border: "1px solid #d3d3d3" }}
-      >
-        Your browser does not support the HTML canvas tag.
-      </canvas>
-    </div>
+    <canvas
+      id="hangmanCanvas"
+      width={`${width}px`}
+      height={`${height}px`}
+      style={{ border: "1px solid #d3d3d3" }}
+    >
+      Your browser does not support the HTML canvas tag.
+    </canvas>
   );
 }
 
