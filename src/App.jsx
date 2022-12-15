@@ -16,6 +16,9 @@ import { themes } from "./components/user_interface/themes";
 
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
+  let debugWord = "Test";
+  console.debug(`Word of the game: ${debugWord}`);
+  const hangmanGame = new Hangman(debugWord);
   const handleThemeChange = (event) => {
     if (theme === themes.light) {
       setTheme(themes.dark);
@@ -27,6 +30,8 @@ function App() {
 
   const handleButton = (event, character) => {
     console.debug(character);
+    hangmanGame.MakeAGuess(character);
+    console.debug(hangmanGame.GetCurrentGameState());
   };
 
   return (
