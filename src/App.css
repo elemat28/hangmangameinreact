@@ -51,6 +51,36 @@ main {
   width: 100%;
 }
 
+.adaptive-ui {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  align-items: center;
+}
+
+.adaptive-ui-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: center;
+}
+
+.game-word-tip > div {
+  margin: 0.5em;
+  padding: 0.5em;
+  font-size: smaller;
+}
+
+.adaptive-ui-content {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
 .keyboard-div {
   width: 100%;
   margin: auto;
