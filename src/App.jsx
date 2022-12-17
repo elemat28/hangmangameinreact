@@ -90,7 +90,7 @@ function App() {
       className="App"
       style={{
         width: window.innerWidth,
-        height: window.innerHeight - heightOfHeader,
+        height: window.innerHeight,
       }}
     >
       <ThemeProvider theme={theme}>
@@ -103,18 +103,31 @@ function App() {
             }
           ></MobileAppBar>
         </header>
-        <main>
+        <main
+          style={{
+            width: window.innerWidth,
+            height: window.innerHeight - heightOfHeader,
+          }}
+        >
           <div className="HangmanGame">
-            <Paper className="hangman-word" elevation={3}>
-              <Word arrayOfCharacters={gameState.currentWord} />
-            </Paper>
-
-            <Paper id="hanganPaper" elevation={2}>
-              <HangmanImage
-                NumberOfLinesToDraw={gameState.incorrectGueeses}
-                heightPx={window.innerHeight * 0.4}
-              />
-            </Paper>
+            <div className="adaptive-ui">
+              <div className="adaptive-ui-header">
+                <Paper className="hangman-word" elevation={3}>
+                  <Word arrayOfCharacters={gameState.currentWord} />
+                </Paper>
+                <div className="game-word-tip">
+                  <Paper elevation={2}>Category: Noun</Paper>
+                </div>
+              </div>
+              <div className="adaptive-ui-content">
+                <Paper id="hanganPaper" elevation={2}>
+                  <HangmanImage
+                    NumberOfLinesToDraw={gameState.incorrectGueeses}
+                    heightPx={window.innerHeight * 0.4}
+                  />
+                </Paper>
+              </div>
+            </div>
             <div className="keyboard-div">
               <OnScreenKeyboard
                 buttonUseFunction={keyPressCallback}
