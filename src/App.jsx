@@ -69,6 +69,9 @@ function App() {
   }
 
   const keyPressCallback = (event, character) => {
+    if (gameState.hasFinished) {
+      return;
+    }
     hangmanInstance.MakeAGuess(character);
     console.debug(hangmanInstance.GetCurrentGameState());
     setGameState(hangmanInstance.GetCurrentGameState());
