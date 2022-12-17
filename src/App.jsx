@@ -8,6 +8,7 @@ import Hangman from "./components/hangman_game/Hangman";
 import OnScreenKeyboard from "./components/user_interface/hangman_game/OnScreenKeyboard";
 import HangmanImage from "./components/user_interface/hangman_game/HangmanImage";
 import Word from "./components/user_interface/hangman_game/Word";
+import EndOfGameScreen from "./components/user_interface/hangman_game/EndOfGameScreen";
 import RandomWordGenerator from "./components/data_fetch/RandomWordGenerator";
 import FetchDefinition from "./components/data_fetch/FetchDefinition";
 import ThemeSelector from "./components/user_interface/general/ThemeSelector";
@@ -18,18 +19,17 @@ import { useEffect } from "react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { type } from "@testing-library/user-event/dist/type";
 import Paper from "@mui/material/Paper";
-
+import Skeleton from "@mui/material/Skeleton";
 function App() {
-  const headerRef = useRef(null);
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
-  const [heightOfHeader, setHeightOfHeader] = useState(0);
-  const [width, setWidth] = useState(0);
   const [wordOfTheGame, setWordOfTheGame] = React.useState(null);
   const [hangmanInstance, setHangmanInstance] = React.useState(null);
   const [gameState, setGameState] = React.useState(Hangman.initialGameState);
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
     []
   );
+  const headerRef = useRef(null);
+  const gameDivRef = useRef(null);
 
   const handleThemeChange = (event) => {
     if (theme === themes.light) {
@@ -88,13 +88,6 @@ function App() {
     keyPressCallback(event, event.key);
   };
 
-  useLayoutEffect(() => {
-    setHeightOfHeader(headerRef.current.clientHeight);
-    setWidth(headerRef.current.clientWidth);
-  }, []);
-
-  const detectKeyDown = (e) => {};
-
   useEffect(() => {
     if (wordOfTheGame == null) {
       getWordAndCreateGame("noun");
@@ -107,12 +100,23 @@ function App() {
     };
   }, [keyboardPressCallback]);
 
+  const [open, setOpen] = React.useState(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleToggle = () => {
+    setOpen(!open);
+  };
+
   return (
     <div
       className="App"
       style={{
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: "100%",
+        minHeight: window.innerHeight,
+        flexGrow: "1",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <ThemeProvider theme={theme}>
@@ -127,28 +131,48 @@ function App() {
         </header>
         <main
           style={{
-            width: window.innerWidth,
-            height: window.innerHeight - heightOfHeader,
+            display: "flex",
+            flexGrow: 1,
           }}
         >
           <div className="HangmanGame">
             <div className="adaptive-ui">
               <div className="adaptive-ui-header">
                 <Paper className="hangman-word" elevation={3}>
-                  <Word arrayOfCharacters={gameState.currentWord} />
+                  {gameState.currentWord.length > 0 ? (
+                    <Word arrayOfCharacters={gameState.currentWord} />
+                  ) : (
+                    <Skeleton
+                      sx={{ width: "100%", height: "3em" }}
+                      animation="wave"
+                      variant="rectangular"
+                    />
+                  )}
                 </Paper>
                 <div className="game-word-tip">
                   <Paper elevation={2}>Category: Noun</Paper>
                 </div>
               </div>
-              <div className="adaptive-ui-content">
-                <Paper id="hanganPaper" elevation={2}>
-                  <HangmanImage
-                    NumberOfLinesToDraw={gameState.incorrectGueeses}
-                    heightPx={window.innerHeight * 0.4}
-                  />
-                </Paper>
-              </div>
+              {gameState.hasFinished ? (
+                <EndOfGameScreen
+                  style={{
+                    position: "absolute",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                  outcome={gameState.hasWon}
+                  wordData={wordOfTheGame}
+                />
+              ) : (
+                <div className="adaptive-ui-content">
+                  <Paper id="hanganPaper" elevation={2}>
+                    <HangmanImage
+                      NumberOfLinesToDraw={gameState.incorrectGueeses}
+                      heightPx={window.innerHeight * 0.4}
+                    />
+                  </Paper>
+                </div>
+              )}
             </div>
             <div className="keyboard-div">
               <OnScreenKeyboard
