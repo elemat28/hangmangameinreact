@@ -3,6 +3,7 @@ import "./Word.css";
 import { useTheme } from "@mui/material";
 import { useEffect } from "react";
 function Word({ arrayOfCharacters }) {
+  const sizingThreshold = 10;
   function letterWrapper(character, index) {
     return (
       <div
@@ -14,11 +15,14 @@ function Word({ arrayOfCharacters }) {
       </div>
     );
   }
-  let fontSizeCoefficient = arrayOfCharacters.length;
-  let fontSize = 90 / fontSizeCoefficient;
-  return (
-    <div className="hangman-word">{arrayOfCharacters.map(letterWrapper)}</div>
-  );
+  let fontSizeCoefficient;
+  if (arrayOfCharacters.length < sizingThreshold) {
+    fontSizeCoefficient = sizingThreshold;
+  } else {
+    fontSizeCoefficient = arrayOfCharacters.length;
+  }
+
+  return <>{arrayOfCharacters.map(letterWrapper)}</>;
 }
 
 export default Word;

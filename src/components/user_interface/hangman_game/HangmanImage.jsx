@@ -1,5 +1,6 @@
 import { Margin, Scale } from "@mui/icons-material";
 import React from "react";
+import "./HangmanImage.css";
 
 function HangmanImage({ NumberOfLinesToDraw, heightPx }) {
   let height = heightPx;
@@ -79,12 +80,7 @@ function HangmanImage({ NumberOfLinesToDraw, heightPx }) {
   }, [NumberOfLinesToDraw, height, width]);
 
   return (
-    <canvas
-      id="hangmanCanvas"
-      width={`${width}px`}
-      height={`${height}px`}
-      style={{ border: "1px solid #d3d3d3", Margin: "5rem" }}
-    >
+    <canvas id="hangmanCanvas" width={`${width}px`} height={`${height}px`}>
       Your browser does not support the HTML canvas tag.
     </canvas>
   );

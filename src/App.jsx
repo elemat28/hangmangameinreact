@@ -17,6 +17,8 @@ import { Button } from "@mui/material";
 import { useEffect } from "react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { type } from "@testing-library/user-event/dist/type";
+import Paper from "@mui/material/Paper";
+
 function App() {
   const headerRef = useRef(null);
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
@@ -103,11 +105,16 @@ function App() {
         </header>
         <main>
           <div className="HangmanGame">
-            <Word arrayOfCharacters={gameState.currentWord} />
-            <HangmanImage
-              NumberOfLinesToDraw={gameState.incorrectGueeses}
-              heightPx={window.innerHeight * 0.4}
-            />
+            <Paper className="hangman-word" elevation={3}>
+              <Word arrayOfCharacters={gameState.currentWord} />
+            </Paper>
+
+            <Paper id="hanganPaper" elevation={2}>
+              <HangmanImage
+                NumberOfLinesToDraw={gameState.incorrectGueeses}
+                heightPx={window.innerHeight * 0.4}
+              />
+            </Paper>
             <div className="keyboard-div">
               <OnScreenKeyboard
                 buttonUseFunction={keyPressCallback}
