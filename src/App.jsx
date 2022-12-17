@@ -3,7 +3,7 @@ import React from "react";
 import { ThemeProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import "./App.css";
-
+import MobileAppBar from "./components/user_interface/general/MobileAppBar";
 import Hangman from "./components/hangman_game/Hangman";
 import OnScreenKeyboard from "./components/user_interface/hangman_game/OnScreenKeyboard";
 import HangmanImage from "./components/user_interface/hangman_game/HangmanImage";
@@ -13,21 +13,18 @@ import FetchDefinition from "./components/data_fetch/FetchDefinition";
 import ThemeSelector from "./components/user_interface/general/ThemeSelector";
 import { ResolveThemeToUse } from "./components/user_interface/general/ThemeSelector";
 import { themes } from "./components/user_interface/themes";
-
+import { Button } from "@mui/material";
+import { useEffect } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { type } from "@testing-library/user-event/dist/type";
 function App() {
+  const headerRef = useRef(null);
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
-
-  //toDo: generate word from API
-  let debugWord = "Test";
-  console.debug(`Word of the game: ${debugWord}`);
-
-  const [hangmanInstance, setHangmanInstance] = React.useState(
-    new Hangman(debugWord)
-  );
-  const [gameState, setGameState] = React.useState(
-    hangmanInstance.GetCurrentGameState()
-  );
-
+  const [heightOfHeader, setHeightOfHeader] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [wordOfTheGame, setWordOfTheGame] = React.useState(null);
+  const [hangmanInstance, setHangmanInstance] = React.useState(null);
+  const [gameState, setGameState] = React.useState(Hangman.initialGameState);
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
     []
   );
@@ -40,33 +37,80 @@ function App() {
     }
   };
 
-  const handleButton = (event, character) => {
-    console.debug(character);
+  async function fetchWordWithDefinition(wordType = null) {
+    let wordFetched;
+    let definitions = null;
+    while (definitions == null) {
+      wordFetched = await RandomWordGenerator(wordType);
+      definitions = await FetchDefinition(wordFetched).then(
+        (arrayOfDefinitions) => {
+          return arrayOfDefinitions;
+        },
+        () => {
+          return null;
+        }
+      );
+      if (definitions != null) {
+        return definitions;
+      }
+    }
+  }
+
+  async function getWordAndCreateGame(wordType = null) {
+    let wordData = await fetchWordWithDefinition(wordType);
+    setWordOfTheGame(wordData);
+    let newGame = new Hangman(wordData[0].word);
+    setHangmanInstance(newGame);
+    console.log(wordData[0].word);
+    setGameState(newGame.GetCurrentGameState());
+    setDisabledKeyboardButtons([]);
+  }
+
+  const keyPressCallback = (event, character) => {
     hangmanInstance.MakeAGuess(character);
     console.debug(hangmanInstance.GetCurrentGameState());
     setGameState(hangmanInstance.GetCurrentGameState());
     setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
-    console.log(event);
   };
 
+  useLayoutEffect(() => {
+    setHeightOfHeader(headerRef.current.clientHeight);
+    setWidth(headerRef.current.clientWidth);
+  }, []);
+
+  useEffect(() => {
+    if (wordOfTheGame == null) {
+      getWordAndCreateGame("noun");
+    }
+  }, []);
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{
+        width: window.innerWidth,
+        height: window.innerHeight - heightOfHeader,
+      }}
+    >
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <header>
-          <p>Hangman Game App</p>
-          <ThemeSelector themeToggleCallback={handleThemeChange} />
+        <header ref={headerRef}>
+          <MobileAppBar
+            title="Hangman Game"
+            themeSelector={
+              <ThemeSelector themeToggleCallback={handleThemeChange} />
+            }
+          ></MobileAppBar>
         </header>
         <main>
           <div className="HangmanGame">
             <Word arrayOfCharacters={gameState.currentWord} />
             <HangmanImage
               NumberOfLinesToDraw={gameState.incorrectGueeses}
-              heightPx={400}
+              heightPx={window.innerHeight * 0.4}
             />
             <div className="keyboard-div">
               <OnScreenKeyboard
-                buttonUseFunction={handleButton}
+                buttonUseFunction={keyPressCallback}
                 disabledButtonsArr={disabledKeyboardButtons}
               />
             </div>

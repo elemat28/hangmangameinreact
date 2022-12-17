@@ -14,6 +14,8 @@ function OnScreenKeyboard({
   ];
   function keyboardButton({ character, onClick, key }) {
     return (
+      /*
+      //This needs to be re-formated to make it fit on screen, temporary fix is being used
       <Button
         variant="contained"
         id={`osk_button_${character}`}
@@ -23,9 +25,21 @@ function OnScreenKeyboard({
           console.debug(disabledButtonsArr);
         }}
         key={key ? key : null}
+        size="small"
       >
         {character}
-      </Button>
+      </Button>#
+      */
+      <input
+        type="button"
+        id={`osk_button_${character}`}
+        disabled={disabledButtonsArr.includes(character)}
+        onClick={(event) => {
+          onClick(event, character);
+        }}
+        key={key ? key : null}
+        value={character}
+      ></input>
     );
   }
 

@@ -1,5 +1,15 @@
 
 export default class Hangman {
+    static initialGameState = {
+        hasFinished: false
+        , hasWon: false
+        , currentWord: []
+        , guessLimit: 10
+        , incorrectGueeses: 0
+        , correctLetters: []
+        , incorrectLetters: []
+        , allGuessedLetters: []
+    }
     constructor(wordToGuess) {
         if (typeof (wordToGuess) != "string") {
             throw new Error("Text argument required");
@@ -15,7 +25,7 @@ export default class Hangman {
 
     #IsCharInWord(character) {
         return (
-            this.word.includes(character)
+            this.word.toLowerCase().includes(character.toLowerCase())
         );
     }
 

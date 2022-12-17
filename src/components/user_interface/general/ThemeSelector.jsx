@@ -7,31 +7,37 @@ import SettingsBrightnessOutlinedIcon from "@mui/icons-material/SettingsBrightne
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-function ThemeSelector({ themeToggleCallback }) {
+function ThemeSelector({ themeToggleCallback, fontSize }) {
   const theme = useTheme();
   const [checked, setChecked] = React.useState(theme.mode === "light");
+  const matches = useMediaQuery(theme.breakpoints.up("sm"));
   return (
-    <div>
-      <FormControlLabel
-        checked={checked}
-        control={
-          <Checkbox
-            inputProps={{ "aria-label": "controlled" }}
-            icon={<SettingsBrightnessTwoToneIcon sx={{ fontSize: "10rem" }} />}
-            checkedIcon={
-              <SettingsBrightnessOutlinedIcon sx={{ fontSize: "10rem" }} />
-            }
-            id="theme_toggler"
-          />
-        }
-        onChange={(event) => {
-          themeToggleCallback(event);
-          setChecked(event.target.checked);
-        }}
-        label="Toggle dark mode"
-        labelPlacement="bottom"
-      />
-    </div>
+    <FormControlLabel
+      style={{ margin: 0 }}
+      checked={checked}
+      control={
+        <Checkbox
+          inputProps={{ "aria-label": "controlled" }}
+          icon={
+            <SettingsBrightnessTwoToneIcon
+              sx={{ fontSize: `${fontSize}rem` }}
+            />
+          }
+          checkedIcon={
+            <SettingsBrightnessOutlinedIcon
+              sx={{ fontSize: `${fontSize}rem` }}
+            />
+          }
+          id="theme_toggler"
+        />
+      }
+      onChange={(event) => {
+        themeToggleCallback(event);
+        setChecked(event.target.checked);
+      }}
+      label={matches ? "Toggle dark mode" : null}
+      labelPlacement="bottom"
+    />
   );
 }
 
@@ -44,5 +50,7 @@ export function ResolveThemeToUse() {
     return themes.light;
   }
 }
-
+ThemeSelector.defaultProps = {
+  fontSize: 3,
+};
 export default ThemeSelector;
