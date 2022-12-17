@@ -24,8 +24,10 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import { Link } from "react-router-dom";
 import ThemeSelector from "./ThemeSelector";
+import { Home } from "../../../pages/Home";
 export default function Header({ title, themeSelector }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -47,6 +49,19 @@ export default function Header({ title, themeSelector }) {
     justifyContent: "flex-end",
   }));
   const drawerWidth = 240;
+
+  function ListItemLink(icon, primary, to) {
+    return (
+      <ListItemButton
+        activeStyle={{ color: "#5754a8" }}
+        component={Link}
+        to={to}
+      >
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        <ListItemText primary={primary} />
+      </ListItemButton>
+    );
+  }
 
   return (
     <>
@@ -78,7 +93,9 @@ export default function Header({ title, themeSelector }) {
           onKeyDown={handleDrawerClose}
         >
           <List
-          /*
+            onClick={handleDrawerClose}
+
+            /*
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
                 Nested List Items
@@ -86,44 +103,18 @@ export default function Header({ title, themeSelector }) {
             }
             */
           >
-            <div style={{ display: "flex" }}>
-              <Link to="/">
-                <ListItemButton onClick={handleDrawerClose}>
-                  <ListItemIcon>
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Home"} />
-                </ListItemButton>
-              </Link>
-              {open ? (
-                <ExpandLess style={{ display: "flex", flexGrow: 1 }} />
-              ) : (
-                <ExpandMore style={{ display: "flex", flexGrow: 1 }} />
-              )}
-            </div>
+            {ListItemLink(<HomeIcon />, "Home", "/")}
           </List>
           <Divider />
-          <List onClick={handleDrawerClose}>
-            <Link to="/games/hangman">
-              <ListItem key={"hangman"} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <MailIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Play Hangman"} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-            {["Home", "Hangman", "Send email", "Drafts"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+          <List
+            onClick={handleDrawerClose}
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Games
+              </ListSubheader>
+            }
+          >
+            {ListItemLink(<VideogameAssetIcon />, "Hangman", "/games/hangman")}
           </List>
           <Divider onClick={() => setExpanded(!expanded)} />
           <List>{expanded ? <ExpandLess /> : <ExpandMore />}</List>
