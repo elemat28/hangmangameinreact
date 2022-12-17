@@ -4,7 +4,7 @@ import { useTheme } from "@mui/material";
 import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-
+import WordDefinitionCard from "./WordDefinitionCard";
 function EndOfGameScreen({ outcome, wordData }) {
   console.log(outcome);
   console.log(wordData);
@@ -23,7 +23,14 @@ function EndOfGameScreen({ outcome, wordData }) {
 
           <p>{wordData ? `'${wordData[0].word}'` : null}</p>
         </div>
-        <div>here is a list of definitions</div>
+        <div>
+          <h4>here is a list of definitions</h4>
+          {wordData
+            ? wordData.map((data, index) => {
+                return <WordDefinitionCard wordData={data} index={index} />;
+              })
+            : null}
+        </div>
       </>
     );
   };

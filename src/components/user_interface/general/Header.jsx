@@ -92,17 +92,7 @@ export default function Header({ title, themeSelector }) {
           //onClick={handleDrawerClose}
           onKeyDown={handleDrawerClose}
         >
-          <List
-            onClick={handleDrawerClose}
-
-            /*
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Nested List Items
-              </ListSubheader>
-            }
-            */
-          >
+          <List onClick={handleDrawerClose}>
             {ListItemLink(<HomeIcon />, "Home", "/")}
           </List>
           <Divider />

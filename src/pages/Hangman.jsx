@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import RandomWordGenerator from "../components/data_fetch/RandomWordGenerator";
 import FetchDefinition from "../components/data_fetch/FetchDefinition";
 import Hangman from "../components/hangman_game/Hangman";
@@ -19,14 +19,14 @@ export function HangmanPage() {
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
     []
   );
-
+  const gameDivRef = useRef(null);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
-    //gameDivRef.current.style.filter = "blur(10PX)";
+    gameDivRef.current.style.filter = "blur(10PX)";
     setOpen(true);
   };
   const handleClose = () => {
-    //gameDivRef.current.style.filter = "";
+    gameDivRef.current.style.filter = "";
     setOpen(false);
   };
   const handleToggle = () => {
@@ -112,7 +112,7 @@ export function HangmanPage() {
   }, [keyboardPressCallback]);
   return (
     <>
-      <div className="HangmanGame" ref={null}>
+      <div className="HangmanGame" ref={gameDivRef}>
         <div className="adaptive-ui">
           <div className="adaptive-ui-header">
             <Paper
