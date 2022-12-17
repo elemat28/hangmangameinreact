@@ -72,10 +72,20 @@ function App() {
     if (gameState.hasFinished) {
       return;
     }
+    if (character.length > 1) {
+      return;
+    }
+    character = character.toLowerCase();
     hangmanInstance.MakeAGuess(character);
     console.debug(hangmanInstance.GetCurrentGameState());
     setGameState(hangmanInstance.GetCurrentGameState());
     setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
+    console.log(disabledKeyboardButtons);
+  };
+
+  const keyboardPressCallback = (event) => {
+    console.log(event);
+    keyPressCallback(event, event.key);
   };
 
   useLayoutEffect(() => {
@@ -83,11 +93,20 @@ function App() {
     setWidth(headerRef.current.clientWidth);
   }, []);
 
+  const detectKeyDown = (e) => {};
+
   useEffect(() => {
     if (wordOfTheGame == null) {
       getWordAndCreateGame("noun");
+    } else {
+      console.log(`Clicked key: `);
+      window.addEventListener("keydown", keyboardPressCallback);
     }
-  }, []);
+    return () => {
+      window.removeEventListener("keydown", keyboardPressCallback);
+    };
+  }, [keyboardPressCallback]);
+
   return (
     <div
       className="App"
