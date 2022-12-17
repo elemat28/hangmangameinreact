@@ -20,6 +20,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { type } from "@testing-library/user-event/dist/type";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
+import Popover from "@mui/material/Popover";
+import Backdrop from "@mui/material/Backdrop";
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
   const [wordOfTheGame, setWordOfTheGame] = React.useState(null);
@@ -80,7 +82,9 @@ function App() {
     console.debug(hangmanInstance.GetCurrentGameState());
     setGameState(hangmanInstance.GetCurrentGameState());
     setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
-    console.log(disabledKeyboardButtons);
+    if (hangmanInstance.GetCurrentGameState().hasFinished) {
+      handleOpen();
+    }
   };
 
   const keyboardPressCallback = (event) => {
@@ -100,12 +104,21 @@ function App() {
     };
   }, [keyboardPressCallback]);
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    gameDivRef.current.style.filter = "blur(10PX)";
+    setOpen(true);
+  };
   const handleClose = () => {
+    gameDivRef.current.style.filter = "";
     setOpen(false);
   };
   const handleToggle = () => {
-    setOpen(!open);
+    if (open) {
+      handleClose();
+    } else {
+      handleOpen();
+    }
   };
 
   return (
@@ -135,10 +148,14 @@ function App() {
             flexGrow: 1,
           }}
         >
-          <div className="HangmanGame">
+          <div className="HangmanGame" ref={gameDivRef}>
             <div className="adaptive-ui">
               <div className="adaptive-ui-header">
-                <Paper className="hangman-word" elevation={3}>
+                <Paper
+                  className="hangman-word"
+                  elevation={3}
+                  onClick={handleToggle}
+                >
                   {gameState.currentWord.length > 0 ? (
                     <Word arrayOfCharacters={gameState.currentWord} />
                   ) : (
@@ -153,26 +170,15 @@ function App() {
                   <Paper elevation={2}>Category: Noun</Paper>
                 </div>
               </div>
-              {gameState.hasFinished ? (
-                <EndOfGameScreen
-                  style={{
-                    position: "absolute",
-                    height: "100%",
-                    width: "100%",
-                  }}
-                  outcome={gameState.hasWon}
-                  wordData={wordOfTheGame}
-                />
-              ) : (
-                <div className="adaptive-ui-content">
-                  <Paper id="hanganPaper" elevation={2}>
-                    <HangmanImage
-                      NumberOfLinesToDraw={gameState.incorrectGueeses}
-                      heightPx={window.innerHeight * 0.4}
-                    />
-                  </Paper>
-                </div>
-              )}
+
+              <div className="adaptive-ui-content">
+                <Paper id="hanganPaper" elevation={2}>
+                  <HangmanImage
+                    NumberOfLinesToDraw={gameState.incorrectGueeses}
+                    heightPx={window.innerHeight * 0.4}
+                  />
+                </Paper>
+              </div>
             </div>
             <div className="keyboard-div">
               <OnScreenKeyboard
@@ -181,6 +187,9 @@ function App() {
               />
             </div>
           </div>
+          <Backdrop open={open} onClick={handleClose}>
+            <EndOfGameScreen outcome={gameState} wordData={wordOfTheGame} />
+          </Backdrop>
         </main>
       </ThemeProvider>
     </div>

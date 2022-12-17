@@ -2,19 +2,54 @@ import React from "react";
 import "./Word.css";
 import { useTheme } from "@mui/material";
 import { useEffect } from "react";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
-function EndOfGameScreen({ arrayOfCharacters }) {
+function EndOfGameScreen({ outcome, wordData }) {
+  console.log(outcome);
+  console.log(wordData);
+  const userLostMessage = () => {
+    return (
+      <>
+        <div>
+          <h3>You've Lost!</h3>
+          <p>
+            Letters found: {outcome.correctLetters.length}/
+            {outcome.currentWord.length}.
+          </p>
+        </div>
+        <div>
+          <h4>The word You were looking for was:</h4>
+
+          <p>{wordData ? `'${wordData[0].word}'` : null}</p>
+        </div>
+        <div>here is a list of definitions</div>
+      </>
+    );
+  };
+
+  const userWonMessage = () => {
+    return (
+      <>
+        <div>
+          <h3>You've Won!</h3>
+          <p>Great Job!</p>
+        </div>
+        <div>
+          <h4>It took You:</h4>
+          <p>Placeholder</p>
+        </div>
+      </>
+    );
+  };
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        height: "100%",
-        width: "100%",
-        background: "black",
-      }}
-    >
-      Hello!
-    </div>
+    <React.Fragment>
+      <Container sx={{ height: "100%", marginTop: "25%" }}>
+        <Box>{outcome.hasWon ? userWonMessage() : userLostMessage()}</Box>
+        <p>Tap anywhere to start a new game</p>
+      </Container>
+    </React.Fragment>
   );
 }
 
