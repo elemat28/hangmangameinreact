@@ -56,9 +56,7 @@ function App() {
         <header ref={headerRef}>
           <Header
             title="Hangman Game"
-            themeSelector={
-              <ThemeSelector themeToggleCallback={handleThemeChange} />
-            }
+            themeSelector={handleThemeChange}
           ></Header>
         </header>
         <main>

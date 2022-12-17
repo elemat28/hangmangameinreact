@@ -25,6 +25,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Link } from "react-router-dom";
+import ThemeSelector from "./ThemeSelector";
 export default function Header({ title, themeSelector }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -65,7 +66,7 @@ export default function Header({ title, themeSelector }) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
-            {themeSelector}
+            <ThemeSelector themeToggleCallback={themeSelector} />
           </Toolbar>
         </AppBar>
       </Box>
@@ -85,14 +86,21 @@ export default function Header({ title, themeSelector }) {
             }
             */
           >
-            <Link to="/">
-              <ListItemButton onClick={handleDrawerClose}>
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Home"} />
-              </ListItemButton>
-            </Link>
+            <div style={{ display: "flex" }}>
+              <Link to="/">
+                <ListItemButton onClick={handleDrawerClose}>
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Home"} />
+                </ListItemButton>
+              </Link>
+              {open ? (
+                <ExpandLess style={{ display: "flex", flexGrow: 1 }} />
+              ) : (
+                <ExpandMore style={{ display: "flex", flexGrow: 1 }} />
+              )}
+            </div>
           </List>
           <Divider />
           <List onClick={handleDrawerClose}>
