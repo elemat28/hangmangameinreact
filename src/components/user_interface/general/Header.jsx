@@ -52,11 +52,7 @@ export default function Header({ title, themeSelector }) {
 
   function ListItemLink(icon, primary, to) {
     return (
-      <ListItemButton
-        activeStyle={{ color: "#5754a8" }}
-        component={Link}
-        to={to}
-      >
+      <ListItemButton component={Link} to={to}>
         {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
         <ListItemText primary={primary} />
       </ListItemButton>

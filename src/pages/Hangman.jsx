@@ -13,8 +13,9 @@ import OnScreenKeyboard from "../components/user_interface/hangman_game/OnScreen
 import HangmanImage from "../components/user_interface/hangman_game/HangmanImage";
 import Word from "../components/user_interface/hangman_game/Word";
 export function HangmanPage() {
-  const [wordOfTheGame, setWordOfTheGame] = React.useState(null);
-  const [hangmanInstance, setHangmanInstance] = React.useState(null);
+  const typeOfWord = useRef("noun");
+  const wordOfTheGame = useRef(null);
+  const hangmanInstance = useRef(null);
   const [gameState, setGameState] = React.useState(Hangman.initialGameState);
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
     []
@@ -57,11 +58,11 @@ export function HangmanPage() {
 
   async function getWordAndCreateGame(wordType = null) {
     let wordData = await fetchWordWithDefinition(wordType);
-    setWordOfTheGame(wordData);
+    wordOfTheGame.current = wordData;
     let newGame = new Hangman(wordData[0].word);
-    setHangmanInstance(newGame);
+    hangmanInstance.current = newGame;
     console.log(wordData[0].word);
-    setGameState(newGame.GetCurrentGameState());
+    setGameState(hangmanInstance.current.GetCurrentGameState());
     setDisabledKeyboardButtons([]);
   }
 
@@ -73,11 +74,11 @@ export function HangmanPage() {
       return;
     }
     character = character.toLowerCase();
-    hangmanInstance.MakeAGuess(character);
-    console.debug(hangmanInstance.GetCurrentGameState());
-    setGameState(hangmanInstance.GetCurrentGameState());
+    hangmanInstance.current.MakeAGuess(character);
+    console.debug(hangmanInstance.current.GetCurrentGameState());
+    setGameState(hangmanInstance.current.GetCurrentGameState());
     setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
-    if (hangmanInstance.GetCurrentGameState().hasFinished) {
+    if (hangmanInstance.current.GetCurrentGameState().hasFinished) {
       handleOpen();
     }
   };
@@ -88,8 +89,8 @@ export function HangmanPage() {
   };
 
   useEffect(() => {
-    if (wordOfTheGame == null) {
-      getWordAndCreateGame("noun");
+    if (wordOfTheGame.current == null) {
+      getWordAndCreateGame(typeOfWord.current);
     } else {
       console.log(`Clicked key: `);
       window.addEventListener("keydown", keyboardPressCallback);
@@ -99,17 +100,6 @@ export function HangmanPage() {
     };
   }, [keyboardPressCallback]);
 
-  useEffect(() => {
-    if (wordOfTheGame == null) {
-      getWordAndCreateGame("noun");
-    } else {
-      console.log(`Clicked key: `);
-      window.addEventListener("keydown", keyboardPressCallback);
-    }
-    return () => {
-      window.removeEventListener("keydown", keyboardPressCallback);
-    };
-  }, [keyboardPressCallback]);
   return (
     <>
       <div className="HangmanGame" ref={gameDivRef}>
@@ -131,7 +121,9 @@ export function HangmanPage() {
               )}
             </Paper>
             <div className="game-word-tip">
-              <Paper elevation={2}>Category: Noun</Paper>
+              <Paper sx={{ textTransform: "capitalize" }} elevation={2}>
+                Category: {typeOfWord.current}
+              </Paper>
             </div>
           </div>
 
@@ -152,7 +144,11 @@ export function HangmanPage() {
         </div>
       </div>
       <Backdrop open={open} onClick={handleClose}>
-        <EndOfGameScreen outcome={gameState} wordData={wordOfTheGame} />
+        <EndOfGameScreen
+          outcome={gameState}
+          wordData={wordOfTheGame.current}
+          wordType={typeOfWord.current}
+        />
       </Backdrop>
     </>
   );
