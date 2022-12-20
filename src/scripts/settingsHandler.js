@@ -90,4 +90,8 @@ export default class SettingsHandler {
         }
 
     }
+
+    async asyncUpdate(value) {
+        this.set(value);
+    }
 }

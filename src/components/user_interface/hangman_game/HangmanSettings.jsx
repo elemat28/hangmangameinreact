@@ -5,13 +5,13 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import VerticalTabs from "../components/user_interface/general/VerticalTabs";
-import { baseSettingsPage } from "../components/user_interface/general/VerticalTabs";
-import { baseSettings_Types } from "../components/user_interface/general/VerticalTabs";
-import { minimumLenghtOfWordSetting } from "./Hangman";
-import { wordTypeSetting } from "./Hangman";
-import "./Home.css";
-export function Home() {
+import VerticalTabs from "../general/VerticalTabs";
+import { baseSettingsPage } from "../general/VerticalTabs";
+import { baseSettings_Types } from "../general/VerticalTabs";
+import { minimumLenghtOfWordSetting } from "../../../pages/Hangman";
+import { wordTypeSetting } from "../../../pages/Hangman";
+
+export function HangmanSettings() {
   const theme = useTheme();
   let wordTypeMenu = {
     tabTitle: "Word Types",
@@ -31,10 +31,5 @@ export function Home() {
       values: [3, 8, 1],
     },
   };
-  return (
-    <div className="home">
-      <h1>Home</h1>
-      {VerticalTabs([wordTypeMenu, lenghtOfWordMenu])}
-    </div>
-  );
+  return <>{VerticalTabs([wordTypeMenu, lenghtOfWordMenu])}</>;
 }
