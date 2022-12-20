@@ -1,5 +1,6 @@
 .on-screen-keyboard {
   width: 100%;
+  min-height: min-content;
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -10,11 +11,11 @@
 
 .keyboard-row {
   width: 100%;
-
+  min-height: min-content;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  flex: 1;
+  flex-grow: 1;
 }
 .keyboard-space {
   display: flex;
@@ -24,9 +25,7 @@
 }
 
 .keyboard-row button {
-  color: white;
-  margin: 0;
-  padding: 0;
+  min-width: min-content;
 }
 
 .keyboard-space button {

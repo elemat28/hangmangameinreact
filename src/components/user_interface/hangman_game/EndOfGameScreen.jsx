@@ -1,6 +1,6 @@
 import React from "react";
 import "./Word.css";
-import { List, ListItem, useTheme } from "@mui/material";
+import { List, ListItem, Typography, useTheme } from "@mui/material";
 import { styled, Stack } from "@mui/system";
 import { useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
@@ -9,12 +9,14 @@ import WordDefinitionCard from "./WordDefinitionCard";
 import { display, flexbox, margin } from "@mui/system";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Divider from "@mui/material/Divider";
-function EndOfGameScreen({ outcome, wordData, wordType }) {
+import Button from "@mui/material/Button";
+function EndOfGameScreen({ outcome, wordData, wordType, newGameFunction }) {
   const theme = useTheme();
   const isMobileRef = useRef(useMediaQuery(theme.breakpoints.down("md")));
   function createSecondaryDefinitionsBox(word, secondaryDefinitions) {
     return (
       <Container
+        disableGutters={true}
         sx={{
           marginTop: "5%",
           display: "flex",
@@ -23,51 +25,53 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
           flexGrow: 1,
         }}
       >
-        <h4>Other definitions</h4>
+        <h4 key={"description"}>Other definitions</h4>
         <Box
-          flexItem
+          key="box"
           sx={{
+            padding: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             boxSizing: "border-box",
             flexGrow: 1,
-            overflow: "scroll",
           }}
         >
-          <Stack
-            flexItem
-            divider={
-              <Divider
-                orientation={{ sx: "horizontal", sm: "vertical" }}
-                flexItem
-              />
-            }
-            direction={{ xs: "column", sm: "row" }}
-            sx={{
-              width: "100%",
-
-              justifyContent: "flex-start",
-              alignContent: "stretch",
-              alignItems: "stretch",
-              overflow: "visible",
-            }}
+          <div
+            style={{ maxWidth: "100%", width: "fit-content", padding: "2%" }}
           >
-            {secondaryDefinitions.map((definition, index) => {
-              return (
-                //main definition is indexed at 0 and we want to have the devider /after/ the first element of secondary definitions, therefore we start from index = 2
-                <React.Fragment>
+            <Stack
+              key={"stackOfSecondary"}
+              spacing={{ xs: 1, sm: 2, md: 2 }}
+              direction={{ xs: "column", sm: "row" }}
+              sx={{
+                boxSizing: "border-box",
+                width: { xs: "100%", md: "auto" },
+                maxWidth: "100%",
+                alignSelf: "start",
+
+                justifyContent: "flex-start",
+                alignContent: "stretch",
+                alignItems: "stretch",
+                overflow: "scroll",
+              }}
+            >
+              {secondaryDefinitions.map((definition, index) => {
+                return (
+                  //main definition is indexed at 0 and we want to have the devider /after/ the first element of secondary definitions, therefore we start from index = 2
+
                   <WordDefinitionCard
+                    key={`Secondary_${index}`}
                     word={word}
                     partOfSpeech={definition.partOfSpeech}
                     definition={definition.definition.definition}
                     source={"Secondary"}
-                    index={index + 1}
+                    index={`Secondary_${index}`}
                   />
-                </React.Fragment>
-              );
-            })}
-          </Stack>
+                );
+              })}
+            </Stack>
+          </div>
         </Box>
       </Container>
     );
@@ -102,21 +106,24 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
         <React.Fragment>
           <Box
             sx={{
+              padding: 0,
               width: "100%",
               justifyContent: "center",
               display: "flex",
             }}
+            id="dupa"
           >
             <WordDefinitionCard
               word={wordData.word}
               partOfSpeech={primaryDefinition.partOfSpeech}
               definition={primaryDefinition.definition.definition}
               source={wordData.sourceUrls[0]}
-              index={0}
             />
           </Box>
           <Container
+            disableGutters={true}
             sx={{
+              padding: 0,
               display: "flex",
               flexGrow: 1,
               height: 0,
@@ -155,6 +162,7 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
         </div>
 
         <Container
+          disableGutters={true}
           sx={{
             display: "flex",
             flexGrow: 1,
@@ -194,30 +202,44 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
       </>
     );
   };
-
+  const startButtonHandler = (event) => {
+    newGameFunction(wordType);
+  };
   return (
     <React.Fragment>
       <Container
+        disableGutters={true}
         id="end-menu"
         sx={{
+          padding: 0,
           display: "flex",
           flexDirection: "column",
           height: "100vh",
-          marginTop: "5%",
+          marginTop: "2.5%",
+          paddingBottom: "2.5%",
           order: 1,
         }}
       >
         <Box
-          flexItem
-          sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            padding: 0,
+          }}
         >
           {outcome.hasWon ? userWonMessage() : userLostMessage()}
         </Box>
-        <div
-          style={{ height: "10%", background: "black", marginBottom: " 2.5%" }}
+
+        <Button
+          sx={{
+            height: "10%",
+          }}
+          variant="contained"
+          onClick={startButtonHandler}
         >
-          <p>Tap anywhere to start a new game</p>
-        </div>
+          <Typography variant="h2">new game</Typography>
+        </Button>
       </Container>
     </React.Fragment>
   );

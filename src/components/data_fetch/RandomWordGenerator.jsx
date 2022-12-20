@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { type } from "@testing-library/user-event/dist/type";
 const randomWordAxiosClient = axios.create({
   baseURL: `https://api.api-ninjas.com/v1`,
   headers: {
@@ -22,13 +23,15 @@ randomWordAxiosClient.interceptors.response.use(
 );
 
 export default async function RandomWordGenerator(typeOfWord = null) {
+  console.debug(typeOfWord);
   if (typeOfWord == null) {
     return randomWordAxiosClient.get("/randomword");
   } else {
     let typeArgument;
-    switch (typeOfWord.toLowerCase()) {
+    console.log(typeOfWord);
+    switch (String(typeOfWord).toLowerCase()) {
       default:
-        return null;
+        throw new Error(`Invalid type of word requested!(${typeOfWord})`);
       case "noun":
         typeArgument = "noun";
         break;

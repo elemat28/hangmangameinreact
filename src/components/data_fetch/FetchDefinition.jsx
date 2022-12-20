@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { wait } from "@testing-library/user-event/dist/utils";
 const dictionaryAxiosClient = axios.create({
   baseURL: `https://api.dictionaryapi.dev/api/v2/entries/en`,
 });
@@ -14,6 +15,8 @@ dictionaryAxiosClient.interceptors.response.use(
       console.warn("No definition found for:");
       console.warn(error);
       return null;
+    } else if (error.response.status === 429) {
+      wait(10000);
     }
   }
 );

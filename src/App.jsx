@@ -10,23 +10,44 @@ import { themes } from "./components/user_interface/themes";
 import { useEffect } from "react";
 import { useLayoutEffect, useRef, useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
-
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { HangmanPage } from "./pages/Hangman";
+import SettingsHandler from "./scripts/settingsHandler";
+import { themeHandler } from "./components/user_interface/general/ThemeSelector";
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
   const headerRef = useRef(null);
   const gameDivRef = useRef(null);
 
   const handleThemeChange = (event) => {
+    console.log("chamge");
     if (theme === themes.light) {
+      themeHandler.set("dark");
       setTheme(themes.dark);
     } else {
+      themeHandler.set("light");
       setTheme(themes.light);
     }
   };
+  const [dimensions, setDimensions] = React.useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+  React.useEffect(() => {
+    function handleResize() {
+      setDimensions({
+        height: window.innerHeight,
+        width: window.innerWidth,
+      });
+    }
 
+    window.addEventListener("resize", handleResize);
+
+    return (_) => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     gameDivRef.current.style.filter = "blur(10PX)";
@@ -45,12 +66,7 @@ function App() {
   };
 
   return (
-    <div
-      className="App"
-      style={{
-        minHeight: window.innerHeight,
-      }}
-    >
+    <div className="App" style={{ height: dimensions.height }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <header ref={headerRef}>

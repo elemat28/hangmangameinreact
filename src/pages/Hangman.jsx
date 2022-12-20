@@ -12,15 +12,30 @@ import Backdrop from "@mui/material/Backdrop";
 import OnScreenKeyboard from "../components/user_interface/hangman_game/OnScreenKeyboard";
 import HangmanImage from "../components/user_interface/hangman_game/HangmanImage";
 import Word from "../components/user_interface/hangman_game/Word";
+import SettingsHandler from "../scripts/settingsHandler";
+export const wordTypeSetting = new SettingsHandler(
+  SettingsHandler.storageType.sessionStorage,
+  "typeOfWord",
+  "noun"
+);
+const minimumLenghtOfWordSetting = new SettingsHandler(
+  SettingsHandler.storageType.sessionStorage,
+  "minWordLen",
+  "6"
+);
 export function HangmanPage() {
-  const typeOfWord = useRef("noun");
+  minimumLenghtOfWordSetting.getOrSet();
+  const typeOfWord = useRef(wordTypeSetting.getOrSet());
+  console.log(wordTypeSetting.get());
   const wordOfTheGame = useRef(null);
   const hangmanInstance = useRef(null);
   const [gameState, setGameState] = React.useState(Hangman.initialGameState);
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
     []
   );
-  const gameDivRef = useRef(null);
+  const gameDivRef = useRef();
+  const UIContentRef = useRef();
+  const hangmanImgRef = useRef();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     gameDivRef.current.style.filter = "blur(10PX)";
@@ -57,7 +72,9 @@ export function HangmanPage() {
   }
 
   async function getWordAndCreateGame(wordType = null) {
+    hangmanInstance.current = null;
     let wordData = await fetchWordWithDefinition(wordType);
+    console.debug(wordType);
     wordOfTheGame.current = wordData;
     let newGame = new Hangman(wordData[0].word);
     hangmanInstance.current = newGame;
@@ -89,6 +106,16 @@ export function HangmanPage() {
   };
 
   useEffect(() => {
+    console.log(UIContentRef.current.clientHeight);
+    UIContentRef.current.firstChild.style.height =
+      UIContentRef.current.clientHeight + "px";
+    try {
+      console.log(hangmanImgRef.current);
+      UIContentRef.current.firstChild.firstChild.style.height =
+        UIContentRef.current.clientHeight + "px";
+      UIContentRef.current.firstChild.firstChild.style.width =
+        (2 / 3) * UIContentRef.current.clientHeight + "px";
+    } catch {}
     if (wordOfTheGame.current == null) {
       getWordAndCreateGame(typeOfWord.current);
     } else {
@@ -102,7 +129,7 @@ export function HangmanPage() {
 
   return (
     <>
-      <div className="HangmanGame" ref={gameDivRef}>
+      <div key={"gameref"} className="HangmanGame" ref={gameDivRef}>
         <div className="adaptive-ui">
           <div className="adaptive-ui-header">
             <Paper
@@ -127,8 +154,8 @@ export function HangmanPage() {
             </div>
           </div>
 
-          <div className="adaptive-ui-content">
-            <Paper id="hanganPaper" elevation={2}>
+          <div className="adaptive-ui-content" ref={UIContentRef}>
+            <Paper id="hangman-paper" style={{ height: 0 }} elevation={2}>
               <HangmanImage
                 NumberOfLinesToDraw={gameState.incorrectGueeses}
                 heightPx={window.innerHeight * 0.4}
@@ -143,11 +170,23 @@ export function HangmanPage() {
           />
         </div>
       </div>
-      <Backdrop open={open} onClick={handleClose}>
+      <Backdrop
+        key="gameOverBackdrop"
+        sx={{
+          height: "100%",
+          background: "rgb(22,1,18)",
+          background:
+            "linear-gradient(0deg, rgba(22,1,18,0.9084677816439075) 3%, rgba(0,0,0,0.7011848684786415) 14%, rgba(3,0,3,0.27821550983674714) 47%, rgba(4,0,4,0.9280754538143382) 93%, rgba(19,1,16,1) 100%)",
+        }}
+        open={open}
+        onClick={handleClose}
+      >
         <EndOfGameScreen
+          key={`endgame_${wordOfTheGame.current}`}
           outcome={gameState}
           wordData={wordOfTheGame.current}
           wordType={typeOfWord.current}
+          newGameFunction={getWordAndCreateGame}
         />
       </Backdrop>
     </>

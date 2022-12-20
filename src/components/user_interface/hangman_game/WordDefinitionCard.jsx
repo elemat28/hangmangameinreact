@@ -12,29 +12,28 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
   const theme = useTheme();
-  const isMobileRef = useRef(useMediaQuery(theme.breakpoints.down("md")));
-
+  console.debug(index);
   return (
     <Card
-      flexItem
       sx={{
-        minWidth: { sx: "90vw", sm: "40vw", md: "30vw", lg: "15vw" },
-        maxWidth: { sx: "90vw", sm: "50vw", md: "35vw", lg: "25vw" },
         boxSizing: "border-box",
+        minWidth: { xs: "90vw", sm: "40vw", md: "30vw", lg: "15vw" },
+        width: { xs: "90vw", sm: "50vw", md: "33vw", lg: "25vw" },
+        maxWidth: { xs: "90vw", sm: "70vw", md: "35vw", lg: "25vw" },
+        display: "flex",
       }}
-      id={`${word}_${index}`}
       key={index}
       style={{
-        display: "flex",
+        dixsplay: "flex",
         flexDirection: "column",
-        margin: "1%",
-        marginBottom: "2%",
-        flexGrow: 1,
+
         minHeight: "min-content",
       }}
     >
       <CardContent
+        key="content"
         sx={{
+          boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
           textAlign: "start",
@@ -46,8 +45,10 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
           sx={{ fontSize: 14 }}
           color="text.secondary"
           gutterBottom
+          key="0"
         ></Typography>
         <Typography
+          key="1"
           variant="h5"
           component="div"
           sx={{
@@ -58,11 +59,12 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
         >
           {word}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography key="2" sx={{ mb: 1.5 }} color="text.secondary">
           {partOfSpeech}
         </Typography>
         <div style={{ maxWidth: "100%", display: "flex" }}>
           <Typography
+            key="3"
             variant="body1"
             sx={{
               textAlign: "start",
@@ -74,7 +76,7 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
           </Typography>
         </div>
       </CardContent>
-      <CardActions>
+      <CardActions key="actions">
         <Typography variant="body2" sx={{ display: "block" }}>
           {source}
         </Typography>
