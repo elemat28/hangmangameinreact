@@ -1,6 +1,7 @@
 import React from "react";
 import "./Word.css";
-import { useTheme } from "@mui/material";
+import { List, ListItem, useTheme } from "@mui/material";
+import { styled, Stack } from "@mui/system";
 import { useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -13,52 +14,60 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
   const isMobileRef = useRef(useMediaQuery(theme.breakpoints.down("md")));
   function createSecondaryDefinitionsBox(word, secondaryDefinitions) {
     return (
-      <Container sx={{ marginTop: "5%" }}>
+      <Container
+        sx={{
+          marginTop: "5%",
+          display: "flex",
+          flexDirection: "column",
+          overflow: "scroll",
+          flexGrow: 1,
+        }}
+      >
         <h4>Other definitions</h4>
         <Box
-          id="secondary-definitions"
-          style={{
+          flexItem
+          sx={{
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignContent: "stretch",
+            flexDirection: "column",
             alignItems: "center",
-            flexWrap: "wrap",
+            boxSizing: "border-box",
+            flexGrow: 1,
+            overflow: "scroll",
           }}
         >
-          {secondaryDefinitions.map((definition, index) => {
-            return (
-              <React.Fragment>
-                {index !== 0 ? (
-                  <>
-                    <Divider
-                      sx={{
-                        margin: "2%",
-                        display: { xs: "block", md: "none" },
-                      }}
-                      flexItem
-                    />
-                    <Divider
-                      sx={{
-                        margin: "2%",
-                        display: { xs: "none", md: "block" },
-                      }}
-                      orientation="vertical"
-                      variant="middle"
-                      flexItem
-                    />
-                  </>
-                ) : null}
-                <WordDefinitionCard
-                  word={word}
-                  partOfSpeech={definition.partOfSpeech}
-                  definition={definition.definition.definition}
-                  source={"Secondary"}
-                  index={index + 1}
-                />
-              </React.Fragment>
-            );
-          })}
+          <Stack
+            flexItem
+            divider={
+              <Divider
+                orientation={{ sx: "horizontal", sm: "vertical" }}
+                flexItem
+              />
+            }
+            direction={{ xs: "column", sm: "row" }}
+            sx={{
+              width: "100%",
+
+              justifyContent: "flex-start",
+              alignContent: "stretch",
+              alignItems: "stretch",
+              overflow: "visible",
+            }}
+          >
+            {secondaryDefinitions.map((definition, index) => {
+              return (
+                //main definition is indexed at 0 and we want to have the devider /after/ the first element of secondary definitions, therefore we start from index = 2
+                <React.Fragment>
+                  <WordDefinitionCard
+                    word={word}
+                    partOfSpeech={definition.partOfSpeech}
+                    definition={definition.definition.definition}
+                    source={"Secondary"}
+                    index={index + 1}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </Stack>
         </Box>
       </Container>
     );
@@ -99,7 +108,6 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
             }}
           >
             <WordDefinitionCard
-              flexItem
               word={wordData.word}
               partOfSpeech={primaryDefinition.partOfSpeech}
               definition={primaryDefinition.definition.definition}
@@ -107,7 +115,17 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
               index={0}
             />
           </Box>
-          <Container>
+          <Container
+            sx={{
+              display: "flex",
+              flexGrow: 1,
+              height: 0,
+              alignItems: "stretch",
+              flexDirection: "column",
+              overflow: "scroll",
+            }}
+            id="secondary"
+          >
             {secondaryDefinitions.length > 0
               ? createSecondaryDefinitionsBox(
                   wordData.word,
@@ -136,13 +154,23 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
           <h4>The word You were looking for was:</h4>
         </div>
 
-        <Container>
+        <Container
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            width: "100%",
+            alignItems: "stretch",
+            flexDirection: "column",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
+              flexGrow: 1,
               width: "100%",
               alignItems: "stretch",
               flexDirection: "column",
+              marginBottom: "1.5%",
             }}
           >
             {wordData ? displayDefinitionCards(wordData[0], wordType) : null}
@@ -169,9 +197,27 @@ function EndOfGameScreen({ outcome, wordData, wordType }) {
 
   return (
     <React.Fragment>
-      <Container sx={{ height: "100%", marginTop: "25%" }}>
-        <Box>{outcome.hasWon ? userWonMessage() : userLostMessage()}</Box>
-        <p>Tap anywhere to start a new game</p>
+      <Container
+        id="end-menu"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          marginTop: "5%",
+          order: 1,
+        }}
+      >
+        <Box
+          flexItem
+          sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+        >
+          {outcome.hasWon ? userWonMessage() : userLostMessage()}
+        </Box>
+        <div
+          style={{ height: "10%", background: "black", marginBottom: " 2.5%" }}
+        >
+          <p>Tap anywhere to start a new game</p>
+        </div>
       </Container>
     </React.Fragment>
   );

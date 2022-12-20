@@ -16,15 +16,22 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
 
   return (
     <Card
+      flexItem
+      sx={{
+        minWidth: { sx: "90vw", sm: "40vw", md: "30vw", lg: "15vw" },
+        maxWidth: { sx: "90vw", sm: "50vw", md: "35vw", lg: "25vw" },
+        boxSizing: "border-box",
+      }}
       id={`${word}_${index}`}
       key={index}
       style={{
         display: "flex",
         flexDirection: "column",
-        margin: "2%",
-        marginBottom: "5%",
+        margin: "1%",
+        marginBottom: "2%",
+        flexGrow: 1,
+        minHeight: "min-content",
       }}
-      sx={{ width: { xs: "90%", sm: "75%", md: "25%" } }}
     >
       <CardContent
         sx={{
@@ -32,6 +39,7 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
           flexDirection: "column",
           textAlign: "start",
           flexGrow: 1,
+          width: "100%",
         }}
       >
         <Typography
@@ -39,15 +47,32 @@ function WordDefinitionCard({ word, partOfSpeech, definition, source, index }) {
           color="text.secondary"
           gutterBottom
         ></Typography>
-        <Typography variant="h5" component="div">
+        <Typography
+          variant="h5"
+          component="div"
+          sx={{
+            boxSizing: "border-box",
+            minWidth: "max-content",
+            paddingRight: "50%",
+          }}
+        >
           {word}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {partOfSpeech}
         </Typography>
-        <Typography variant="body1" sx={{ textAlign: "start" }}>
-          {definition}
-        </Typography>
+        <div style={{ maxWidth: "100%", display: "flex" }}>
+          <Typography
+            variant="body1"
+            sx={{
+              textAlign: "start",
+              width: "min-content",
+              flexGrow: 1,
+            }}
+          >
+            {definition}
+          </Typography>
+        </div>
       </CardContent>
       <CardActions>
         <Typography variant="body2" sx={{ display: "block" }}>
