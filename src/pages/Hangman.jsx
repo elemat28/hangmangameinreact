@@ -168,7 +168,9 @@ export function HangmanPage() {
             onClick={openGameSettingsCallback}
           >
             <Paper sx={{ display: "flex", flexGrow: 1, height: "100%" }}>
-              <HangmanSettings></HangmanSettings>
+              <HangmanSettings
+                closeFunction={openGameSettingsCallback}
+              ></HangmanSettings>
             </Paper>
           </Backdrop>
         </div>

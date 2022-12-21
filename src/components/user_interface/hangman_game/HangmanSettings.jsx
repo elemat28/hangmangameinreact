@@ -10,8 +10,9 @@ import { baseSettingsPage } from "../general/VerticalTabs";
 import { baseSettings_Types } from "../general/VerticalTabs";
 import { minimumLenghtOfWordSetting } from "../../../pages/Hangman";
 import { wordTypeSetting } from "../../../pages/Hangman";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
-export function HangmanSettings() {
+export function HangmanSettings(closeFunction) {
   const theme = useTheme();
   let wordTypeMenu = {
     tabTitle: "Word Types",
@@ -31,5 +32,12 @@ export function HangmanSettings() {
       values: [3, 8, 1],
     },
   };
-  return <>{VerticalTabs([wordTypeMenu, lenghtOfWordMenu])}</>;
+  return (
+    <>
+      {VerticalTabs([wordTypeMenu, lenghtOfWordMenu], {
+        callbackFunction: closeFunction,
+        icon: ClearOutlinedIcon,
+      })}
+    </>
+  );
 }
