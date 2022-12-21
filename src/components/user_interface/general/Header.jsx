@@ -25,6 +25,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
+import NotesIcon from "@mui/icons-material/Notes";
 import { Link } from "react-router-dom";
 import ThemeSelector from "./ThemeSelector";
 import { Home } from "../../../pages/Home";
@@ -96,11 +97,12 @@ export default function Header({ title, themeSelector }) {
             onClick={handleDrawerClose}
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
-                Games
+                Hangman
               </ListSubheader>
             }
           >
-            {ListItemLink(<VideogameAssetIcon />, "Hangman", "/games/hangman")}
+            {ListItemLink(<VideogameAssetIcon />, "Play", "/hangman/play")}
+            {ListItemLink(<NotesIcon />, "Game History", "/hangman/history")}
           </List>
           <Divider onClick={() => setExpanded(!expanded)} />
           <List>{expanded ? <ExpandLess /> : <ExpandMore />}</List>

@@ -1,3 +1,5 @@
+import { Try } from "@mui/icons-material";
+
 export default class SettingsHandler {
     static storageType = {
         localStorage: 0,
@@ -126,10 +128,15 @@ export class RefHandler {
     push(value) {
         try {
             this.ref.current.push(value);
-            this.SettingsHandler.set(value)
-        }
-        catch {
+        } catch {
             throw new Error("ref.current Incompatible with push!");
         }
+        try {
+            this.SettingsHandler.set(this.ref.current)
+        }
+        catch {
+            throw new Error("Error while handler was setting");
+        }
     }
+
 }

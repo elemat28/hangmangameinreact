@@ -15,6 +15,7 @@ import { Home } from "./pages/Home";
 import { HangmanPage } from "./pages/Hangman";
 import SettingsHandler from "./scripts/settingsHandler";
 import { themeHandler } from "./components/user_interface/general/ThemeSelector";
+import { HangmanHistory } from "./pages/HangmanHistory";
 function App() {
   const [theme, setTheme] = React.useState(ResolveThemeToUse());
   const headerRef = useRef(null);
@@ -77,7 +78,8 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/games/hangman" element={<HangmanPage />} />
+            <Route path="/hangman/play" element={<HangmanPage />} />
+            <Route path="/hangman/history" element={<HangmanHistory />} />
           </Routes>
         </main>
       </ThemeProvider>

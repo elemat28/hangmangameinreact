@@ -29,7 +29,19 @@
     {
       "name": "Play Hangman",
       "short_name": "Play",
-      "url": "/games/hangman",
+      "url": "/hangman/play",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "See Game History",
+      "short_name": "History",
+      "url": "/hangman/history",
       "icons": [
         {
           "src": "/android-chrome-192x192.png",

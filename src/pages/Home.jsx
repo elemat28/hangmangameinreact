@@ -5,7 +5,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-
+import { faker } from "@faker-js/faker";
 import "./Home.css";
 export function Home() {
   const theme = useTheme();
