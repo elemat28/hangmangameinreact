@@ -14,10 +14,12 @@ import OnScreenKeyboard from "../components/user_interface/hangman_game/OnScreen
 import HangmanImage from "../components/user_interface/hangman_game/HangmanImage";
 import Word from "../components/user_interface/hangman_game/Word";
 import SettingsHandler from "../scripts/settingsHandler";
+import IconButton from "@mui/material/IconButton";
 import { ButtonGroup, Typography, Button } from "@mui/material";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { HangmanSettings } from "../components/user_interface/hangman_game/HangmanSettings";
 export const wordTypeSetting = new SettingsHandler(
   SettingsHandler.storageType.sessionStorage,
@@ -29,6 +31,10 @@ export const minimumLenghtOfWordSetting = new SettingsHandler(
   "minWordLen",
   "6"
 );
+
+export function ButtonWithCallback({ label, callback, Icon }) {
+  return null;
+}
 export function HangmanPage() {
   minimumLenghtOfWordSetting.getOrSet();
   const typeOfWord = useRef(wordTypeSetting.getOrSet());
@@ -44,7 +50,9 @@ export function HangmanPage() {
   const UIContentRef = useRef();
   const hangmanImgRef = useRef();
   const settingsOverlayRef = useRef();
+  const exitButtonRef = useRef();
   const adaptiveUiRef = useRef();
+  const settingsComponentRef = useRef();
   const [inMenu, setInMenu] = useState(false);
   const [endOfGameoverlayOpen, setEndOfGameoverlayOpen] = React.useState(false);
   const handleOpenEndOfGame = () => {
@@ -126,6 +134,22 @@ export function HangmanPage() {
     setInMenu(!inMenu);
   }
 
+  const ConstExitButtonWithCallback = () => {
+    <>
+      <IconButton onClick={openGameSettingsCallback} aria-label="Close Menu">
+        <ClearOutlinedIcon />
+      </IconButton>
+    </>;
+  };
+
+  function addExitButtonToMenu(addTo, addThis) {
+    console.log(addTo.current);
+    console.log(addThis.current);
+    try {
+      addTo.current.firstChild.push(addThis.current);
+    } catch {}
+  }
+
   useEffect(() => {
     console.log(UIContentRef.current.clientHeight);
     UIContentRef.current.firstChild.style.height =
@@ -167,14 +191,22 @@ export function HangmanPage() {
             open={true}
             onClick={openGameSettingsCallback}
           >
-            <Paper sx={{ display: "flex", flexGrow: 1, height: "100%" }}>
+            <Paper
+              ref={settingsComponentRef}
+              sx={{ display: "flex", flexGrow: 1, height: "100%" }}
+            >
               <HangmanSettings
-                closeFunction={openGameSettingsCallback}
+                callbackFunction={openGameSettingsCallback}
               ></HangmanSettings>
             </Paper>
           </Backdrop>
         </div>
         <div ref={adaptiveUiRef} className="adaptive-ui">
+          {ButtonWithCallback(
+            "label",
+            openGameSettingsCallback,
+            ClearOutlinedIcon
+          )}
           <div className="adaptive-ui-header">
             <Paper
               className="hangman-word"
@@ -240,6 +272,7 @@ export function HangmanPage() {
           newGameFunction={getWordAndCreateGame}
         />
       </Backdrop>
+      {addExitButtonToMenu(settingsComponentRef, exitButtonRef)}
     </>
   );
 }

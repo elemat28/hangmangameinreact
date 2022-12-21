@@ -10,6 +10,7 @@ import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
 import Paper from "@mui/material/Paper";
 import SettingsPageBaseComponent from "../../SettingsPageBaseComponent";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -39,8 +40,8 @@ export const baseSettings_Types = {
   pickMultiple: 3,
 };
 
-export default function VerticalTabs(props) {
-  console.log(props);
+export default function VerticalTabs({ settingsPages, callbackFunction }) {
+  console.log(settingsPages);
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -65,26 +66,34 @@ export default function VerticalTabs(props) {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: "divider" }}
       >
-        {props.map((element, index) => {
-          return <Tab label={element.tabTitle} {...a11yProps(index)} />;
-        })}
-        ;
+        {callbackFunction != null ? (
+          <Tab label={"Exit"} icon={<ClearOutlinedIcon />} {...a11yProps(-1)} />
+        ) : null}
+
+        {settingsPages != null
+          ? settingsPages.map((element, index) => {
+              return <Tab label={element.tabTitle} {...a11yProps(index)} />;
+            })
+          : null}
+        {}
       </Tabs>
-      {props.map((element, index) => {
-        return (
-          <TabPanel value={value} index={index} key={index}>
-            {console.log(element.pageProps)}
-            {SettingsPageBaseComponent(
-              element.pageProps.pageHeader,
-              element.pageProps.settingHandler,
-              {
-                settingType: element.pageProps.settingType,
-                values: element.pageProps.values,
-              }
-            )}
-          </TabPanel>
-        );
-      })}
+      {settingsPages != null
+        ? settingsPages.map((element, index) => {
+            return (
+              <TabPanel value={value} index={index} key={index}>
+                {console.log(element.pageProps)}
+                {SettingsPageBaseComponent(
+                  element.pageProps.pageHeader,
+                  element.pageProps.settingHandler,
+                  {
+                    settingType: element.pageProps.settingType,
+                    values: element.pageProps.values,
+                  }
+                )}
+              </TabPanel>
+            );
+          })
+        : null}
     </Box>
   );
 }
