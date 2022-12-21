@@ -1,0 +1,10 @@
+.hangman-word {
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
+.character-slot {
+  display: inline;
+}

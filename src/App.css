@@ -1,5 +1,10 @@
 .App {
+  width: 100%;
+  max-height: 100%;
   text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -15,7 +20,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,9 +42,64 @@
   }
 }
 
+header {
+  display: flex;
+}
+
+main {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  height: 100%;
+  max-height: 100%;
+}
+
+.HangmanGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-height: inherit;
+  flex-grow: 1;
+}
+
+.adaptive-ui {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-height: 60%;
+  width: 100%;
+  align-items: center;
+}
+
+.adaptive-ui-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: center;
+}
+
+.game-word-tip > div {
+  margin: 0.5em;
+  padding: 0.5em;
+  font-size: smaller;
+}
+
+.adaptive-ui-content {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding-bottom: 1vh;
+}
+
 .keyboard-div {
-  min-width: min-content;
-  max-width: max-content;
-  margin: auto;
-  height: 15rem;
+  width: 100%;
+  margin: 0;
+  height: 40%;
+  align-items: flex-end;
+  justify-self: flex-end;
 }
