@@ -206,7 +206,6 @@ export function HangmanPage() {
         className="HangmanGame"
         ref={gameDivRef}
         style={{
-          maxWidth: theme.breakpoints.values.lg,
           alignSelf: "center",
           height: "100%",
         }}
@@ -289,7 +288,13 @@ export function HangmanPage() {
             </Paper>
           </div>
         </div>
-        <div className="keyboard-div">
+        <div
+          style={{
+            maxWidth: theme.breakpoints.values.lg,
+            heigth: { xs: "50%", sm: "40%", md: "30%" },
+          }}
+          className="keyboard-div"
+        >
           <OnScreenKeyboard
             buttonUseFunction={keyPressCallback}
             disabledButtonsArr={disabledKeyboardButtons}
