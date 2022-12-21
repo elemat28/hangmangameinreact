@@ -189,11 +189,15 @@ export function HangmanPage() {
               margin: "5%",
             }}
             open={true}
-            onClick={openGameSettingsCallback}
           >
             <Paper
               ref={settingsComponentRef}
-              sx={{ display: "flex", flexGrow: 1, height: "100%" }}
+              sx={{
+                display: "flex",
+                flexGrow: 1,
+                height: "100%",
+                flexDirection: "column",
+              }}
             >
               <HangmanSettings
                 callbackFunction={openGameSettingsCallback}

@@ -8,9 +8,9 @@ import { useTheme } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import Slider from "@mui/material/Slider";
 import MuiInput from "@mui/material/Input";
-import Paper from "@mui/material/Paper";
 import SettingsPageBaseComponent from "../../SettingsPageBaseComponent";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { IconButton } from "@mui/material";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -56,20 +56,32 @@ export default function VerticalTabs({ settingsPages, callbackFunction }) {
         flexGrow: 1,
         display: "flex",
         background: theme.palette.secondary,
+        flexDirection: "column",
       }}
     >
+      {callbackFunction != null ? (
+        <IconButton
+          width="20vw"
+          label={"Exit"}
+          key={99}
+          onClick={callbackFunction}
+          sx={{ position: "Absolute", left: 0, zIndex: 1220 }}
+        >
+          <ClearOutlinedIcon />
+        </IconButton>
+      ) : null}
       <Tabs
-        orientation="vertical"
-        variant="scrollable"
+        orientation="horizontal"
+        variant="fullWidth"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{
+          borderRight: 1,
+          borderColor: "divider",
+          justifyContent: "center",
+        }}
       >
-        {callbackFunction != null ? (
-          <Tab label={"Exit"} icon={<ClearOutlinedIcon />} {...a11yProps(-1)} />
-        ) : null}
-
         {settingsPages != null
           ? settingsPages.map((element, index) => {
               return <Tab label={element.tabTitle} {...a11yProps(index)} />;

@@ -109,7 +109,12 @@ export default function SettingsPageBaseComponent(
   }
   console.log(settingType);
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box
+      sx={{
+        height: { xs: "95%" },
+        width: { xs: "95%", sm: "95%", md: "max-content" },
+      }}
+    >
       <Typography variant="h6">{pageTitle}</Typography>
       {settingType === baseSettings_Types.toggle ? toggle(values) : null}
       {settingType === baseSettings_Types.list ? list(values) : null}
