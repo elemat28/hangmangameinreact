@@ -21,7 +21,6 @@ function App() {
   const gameDivRef = useRef(null);
 
   const handleThemeChange = (event) => {
-    console.log("chamge");
     if (theme === themes.light) {
       themeHandler.set("dark");
       setTheme(themes.dark);

@@ -27,11 +27,11 @@ export default function SettingsPageBaseComponent(
   { settingType, values }
 ) {
   const theme = useTheme();
-  const [stateObj, setState] = React.useState(settingHandler.getOrSet());
+  const [stateObj, setState] = React.useState(settingHandler.get());
 
   const handleChange = (event) => {
     if (event.target.value !== stateObj) {
-      settingHandler.asyncUpdate(event.target.value);
+      settingHandler.set(event.target.value);
       setState(event.target.value);
     }
     console.log(event.target.value);

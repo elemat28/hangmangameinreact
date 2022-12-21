@@ -111,7 +111,7 @@ function EndOfGameScreen({ outcome, wordData, wordType, newGameFunction }) {
               justifyContent: "center",
               display: "flex",
             }}
-            id="dupa"
+            id="main-card"
           >
             <WordDefinitionCard
               word={wordData.word}

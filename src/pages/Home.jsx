@@ -5,36 +5,14 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
-import VerticalTabs from "../components/user_interface/general/VerticalTabs";
-import { baseSettingsPage } from "../components/user_interface/general/VerticalTabs";
-import { baseSettings_Types } from "../components/user_interface/general/VerticalTabs";
-import { minimumLenghtOfWordSetting } from "./Hangman";
-import { wordTypeSetting } from "./Hangman";
+
 import "./Home.css";
 export function Home() {
   const theme = useTheme();
-  let wordTypeMenu = {
-    tabTitle: "Word Types",
-    pageProps: {
-      pageHeader: "Mark which categories you would like to play",
-      settingHandler: wordTypeSetting,
-      settingType: baseSettings_Types.list,
-      values: ["noun", "verb", "adverb", "adjective"],
-    },
-  };
-  let lenghtOfWordMenu = {
-    tabTitle: "Word Lenght",
-    pageProps: {
-      pageHeader: "Select the minimum ammount of letters in the gameword",
-      settingHandler: minimumLenghtOfWordSetting,
-      settingType: baseSettings_Types.range,
-      values: [3, 8, 1],
-    },
-  };
+
   return (
     <div className="home">
       <h1>Home</h1>
-      {VerticalTabs([wordTypeMenu, lenghtOfWordMenu])}
     </div>
   );
 }

@@ -20,27 +20,44 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { HangmanSettings } from "../components/user_interface/hangman_game/HangmanSettings";
-export const wordTypeSetting = new SettingsHandler(
-  SettingsHandler.storageType.sessionStorage,
-  "typeOfWord",
-  "noun"
-);
-export const minimumLenghtOfWordSetting = new SettingsHandler(
-  SettingsHandler.storageType.sessionStorage,
-  "minWordLen",
-  "6"
-);
+import {
+  wordTypeMenu,
+  lenghtOfWordMenu,
+} from "../components/user_interface/hangman_game/HangmanSettings";
+import { StateHandler, RefHandler } from "../scripts/settingsHandler";
+import VerticalTabs from "../components/user_interface/general/VerticalTabs";
 
-export function ButtonWithCallback({ label, callback, Icon }) {
-  return null;
-}
 export function HangmanPage() {
-  minimumLenghtOfWordSetting.getOrSet();
+  const wordTypeSetting = new SettingsHandler(
+    SettingsHandler.storageType.localStorage,
+    "typeOfWord",
+    "noun"
+  );
+  const minimumLenghtOfWordSetting = new SettingsHandler(
+    SettingsHandler.storageType.localStorage,
+    "minWordLen",
+    "6"
+  );
+  const gameHistorySetting = new SettingsHandler(
+    SettingsHandler.storageType.localStorage,
+    "gameHistory",
+    [],
+    true
+  );
+  const minimumLenghtOfWord = useRef(minimumLenghtOfWordSetting.getOrSet());
+  const minimumLenghtOfWordHandler = new RefHandler(
+    minimumLenghtOfWordSetting,
+    minimumLenghtOfWord
+  );
   const typeOfWord = useRef(wordTypeSetting.getOrSet());
-  console.log(wordTypeSetting.get());
+  const typeOfWordHandler = new RefHandler(wordTypeSetting, typeOfWord);
+
+  const gameHistory = useRef(gameHistorySetting.getOrSet());
+  const gameHistoryHandler = new RefHandler(gameHistorySetting, gameHistory);
+
   const wordOfTheGame = useRef(null);
   const hangmanInstance = useRef(null);
+  const currentGameTypeOfWordRef = useRef(null);
   const [gameState, setGameState] = React.useState(Hangman.initialGameState);
   const [gameSettingsOpen, setGameSettingsOpen] = React.useState(false);
   const [disabledKeyboardButtons, setDisabledKeyboardButtons] = React.useState(
@@ -50,7 +67,6 @@ export function HangmanPage() {
   const UIContentRef = useRef();
   const hangmanImgRef = useRef();
   const settingsOverlayRef = useRef();
-  const exitButtonRef = useRef();
   const adaptiveUiRef = useRef();
   const settingsComponentRef = useRef();
   const [inMenu, setInMenu] = useState(false);
@@ -91,14 +107,28 @@ export function HangmanPage() {
 
   async function getWordAndCreateGame(wordType = null) {
     hangmanInstance.current = null;
+    currentGameTypeOfWordRef.current = null;
     let wordData = await fetchWordWithDefinition(wordType);
     console.debug(wordType);
     wordOfTheGame.current = wordData;
     let newGame = new Hangman(wordData[0].word);
     hangmanInstance.current = newGame;
-    console.log(wordData[0].word);
+    console.log(wordData);
     setGameState(hangmanInstance.current.GetCurrentGameState());
+    currentGameTypeOfWordRef.current = wordType;
     setDisabledKeyboardButtons([]);
+    console.debug(gameState);
+  }
+
+  function recordResultToLocalHistory(word, wordCategory, hangmanState) {
+    let newRecord = {
+      word: word,
+      wordCategory: wordCategory,
+      timestamp: new Date().getTime(),
+      hangmanState: hangmanState,
+    };
+    console.debug(newRecord);
+    gameHistoryHandler.push(newRecord);
   }
 
   const keyPressCallback = (event, character) => {
@@ -114,6 +144,11 @@ export function HangmanPage() {
     setGameState(hangmanInstance.current.GetCurrentGameState());
     setDisabledKeyboardButtons([character].concat(disabledKeyboardButtons));
     if (hangmanInstance.current.GetCurrentGameState().hasFinished) {
+      recordResultToLocalHistory(
+        wordOfTheGame.current[0].word,
+        currentGameTypeOfWordRef.current,
+        hangmanInstance.current.GetCurrentGameState()
+      );
       handleOpenEndOfGame();
     }
   };
@@ -132,22 +167,6 @@ export function HangmanPage() {
       adaptiveUiRef.current.style.display = "none";
     }
     setInMenu(!inMenu);
-  }
-
-  const ConstExitButtonWithCallback = () => {
-    <>
-      <IconButton onClick={openGameSettingsCallback} aria-label="Close Menu">
-        <ClearOutlinedIcon />
-      </IconButton>
-    </>;
-  };
-
-  function addExitButtonToMenu(addTo, addThis) {
-    console.log(addTo.current);
-    console.log(addThis.current);
-    try {
-      addTo.current.firstChild.push(addThis.current);
-    } catch {}
   }
 
   useEffect(() => {
@@ -171,7 +190,7 @@ export function HangmanPage() {
       window.removeEventListener("keydown", keyboardPressCallback);
     };
   }, [keyboardPressCallback]);
-
+  console.log(wordTypeMenu(typeOfWordHandler.set));
   return (
     <>
       <div key={"gameref"} className="HangmanGame" ref={gameDivRef}>
@@ -199,18 +218,17 @@ export function HangmanPage() {
                 flexDirection: "column",
               }}
             >
-              <HangmanSettings
-                callbackFunction={openGameSettingsCallback}
-              ></HangmanSettings>
+              {VerticalTabs({
+                settingsPages: [
+                  wordTypeMenu(typeOfWordHandler),
+                  lenghtOfWordMenu(minimumLenghtOfWordHandler),
+                ],
+                callbackFunction: openGameSettingsCallback,
+              })}
             </Paper>
           </Backdrop>
         </div>
         <div ref={adaptiveUiRef} className="adaptive-ui">
-          {ButtonWithCallback(
-            "label",
-            openGameSettingsCallback,
-            ClearOutlinedIcon
-          )}
           <div className="adaptive-ui-header">
             <Paper
               className="hangman-word"
@@ -235,7 +253,11 @@ export function HangmanPage() {
                   variant="contained"
                   endIcon={<TuneIcon />}
                 >
-                  <Typography variant="body1">{typeOfWord.current}</Typography>
+                  <Typography variant="body1">
+                    {currentGameTypeOfWordRef.current != null
+                      ? currentGameTypeOfWordRef.current
+                      : typeOfWord.current}
+                  </Typography>
                 </Button>
               </Paper>
             </div>
@@ -272,11 +294,14 @@ export function HangmanPage() {
           key={`endgame_${wordOfTheGame.current}`}
           outcome={gameState}
           wordData={wordOfTheGame.current}
-          wordType={typeOfWord.current}
+          wordType={
+            currentGameTypeOfWordRef.current != null
+              ? currentGameTypeOfWordRef.current
+              : typeOfWord.current
+          }
           newGameFunction={getWordAndCreateGame}
         />
       </Backdrop>
-      {addExitButtonToMenu(settingsComponentRef, exitButtonRef)}
     </>
   );
 }

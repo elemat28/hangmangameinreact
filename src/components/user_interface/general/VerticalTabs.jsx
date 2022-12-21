@@ -92,8 +92,14 @@ export default function VerticalTabs({ settingsPages, callbackFunction }) {
       {settingsPages != null
         ? settingsPages.map((element, index) => {
             return (
-              <TabPanel value={value} index={index} key={index}>
+              <TabPanel
+                style={{ alignSelf: "center" }}
+                value={value}
+                index={index}
+                key={index}
+              >
                 {console.log(element.pageProps)}
+
                 {SettingsPageBaseComponent(
                   element.pageProps.pageHeader,
                   element.pageProps.settingHandler,

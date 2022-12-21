@@ -95,3 +95,41 @@ export default class SettingsHandler {
         this.set(value);
     }
 }
+
+export class StateHandler {
+    constructor(SettingsHandler, state, setter) {
+        this.SettingsHandler = SettingsHandler;
+        this.state = state;
+        this.setterFunction = setter;
+    }
+    set(newValue) {
+        this.setter(newValue);
+        this.SettingsHandler.set(newValue);
+    }
+    get() {
+        return (this.state)
+    }
+}
+
+export class RefHandler {
+    constructor(SettingsHandler, ref) {
+        this.SettingsHandler = SettingsHandler;
+        this.ref = ref;
+    }
+    set(newValue) {
+        this.ref.current = newValue;
+        this.SettingsHandler.set(newValue);
+    }
+    get() {
+        return (this.ref.current)
+    }
+    push(value) {
+        try {
+            this.ref.current.push(value);
+            this.SettingsHandler.set(value)
+        }
+        catch {
+            throw new Error("ref.current Incompatible with push!");
+        }
+    }
+}

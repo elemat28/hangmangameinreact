@@ -9,35 +9,32 @@ import VerticalTabs from "../general/VerticalTabs";
 import { baseSettingsPage } from "../general/VerticalTabs";
 import { baseSettings_Types } from "../general/VerticalTabs";
 import { minimumLenghtOfWordSetting } from "../../../pages/Hangman";
-import { wordTypeSetting } from "../../../pages/Hangman";
-import { Button } from "@mui/material";
 
-export function HangmanSettings({ callbackFunction }) {
-  const theme = useTheme();
-  let wordTypeMenu = {
+import { Button } from "@mui/material";
+export function wordTypeMenu(settingHandler) {
+  return {
     tabTitle: "Word Types",
     pageProps: {
       pageHeader: "Mark which categories you would like to play",
-      settingHandler: wordTypeSetting,
+      settingHandler: settingHandler,
       settingType: baseSettings_Types.list,
       values: ["noun", "verb", "adverb", "adjective"],
     },
   };
-  let lenghtOfWordMenu = {
+}
+export function lenghtOfWordMenu(settingHandler) {
+  return {
     tabTitle: "Word Lenght",
     pageProps: {
       pageHeader: "Select the minimum ammount of letters in the gameword",
-      settingHandler: minimumLenghtOfWordSetting,
+      settingHandler: settingHandler,
       settingType: baseSettings_Types.range,
       values: [3, 8, 1],
     },
   };
-  return (
-    <>
-      {VerticalTabs({
-        settingsPages: [wordTypeMenu, lenghtOfWordMenu],
-        callbackFunction: callbackFunction,
-      })}
-    </>
-  );
+}
+export function HangmanSettings({ callbackFunction }) {
+  const theme = useTheme();
+
+  return <>{}</>;
 }
