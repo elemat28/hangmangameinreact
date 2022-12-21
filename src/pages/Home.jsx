@@ -6,11 +6,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
-
+import { HangmanPage } from "./Hangman";
 import "./Home.css";
 import { Button } from "@mui/material";
 import RatingComponent from "../components/RatingComponent";
-import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 export function Home() {
   const theme = useTheme();
   function generateReviewData() {
@@ -63,7 +63,7 @@ export function Home() {
           plays<Typography> EXACTLY </Typography>as You would expect
         </Typography>
         <Button
-          href="/hangman/play"
+          component={Link}
           to={"/hangman/play"}
           sx={{ width: "50%", padding: "1em", margin: "2%" }}
           variant="contained"
