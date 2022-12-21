@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { useTheme } from "@emotion/react";
 import {
   wordTypeMenu,
   lenghtOfWordMenu,
@@ -28,6 +29,7 @@ import { StateHandler, RefHandler } from "../scripts/settingsHandler";
 import VerticalTabs from "../components/user_interface/general/VerticalTabs";
 
 export function HangmanPage() {
+  const theme = useTheme();
   const wordTypeSetting = new SettingsHandler(
     SettingsHandler.storageType.localStorage,
     "typeOfWord",
@@ -199,7 +201,16 @@ export function HangmanPage() {
   console.log(wordTypeMenu(typeOfWordHandler.set));
   return (
     <>
-      <div key={"gameref"} className="HangmanGame" ref={gameDivRef}>
+      <div
+        key={"gameref"}
+        className="HangmanGame"
+        ref={gameDivRef}
+        style={{
+          maxWidth: theme.breakpoints.values.lg,
+          alignSelf: "center",
+          height: "100%",
+        }}
+      >
         <div
           className="settings-overlay"
           ref={settingsOverlayRef}

@@ -10,6 +10,7 @@ import { faker } from "@faker-js/faker";
 import "./Home.css";
 import { Button } from "@mui/material";
 import RatingComponent from "../components/RatingComponent";
+import Link from "@mui/material/Link";
 export function Home() {
   const theme = useTheme();
   function generateReviewData() {
@@ -62,9 +63,10 @@ export function Home() {
           plays<Typography> EXACTLY </Typography>as You would expect
         </Typography>
         <Button
+          href="/hangman/play"
+          to={"/hangman/play"}
           sx={{ width: "50%", padding: "1em", margin: "2%" }}
           variant="contained"
-          href="/hangman/play"
         >
           <Typography variant="h3"> PLAY THE GAME </Typography>
         </Button>
