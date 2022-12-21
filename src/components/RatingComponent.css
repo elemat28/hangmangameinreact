@@ -1,0 +1,7 @@
+.rating-comp {
+  max-width: min-content;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  padding: 2%;
+}

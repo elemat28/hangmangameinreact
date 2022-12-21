@@ -104,15 +104,7 @@ export default function Header({ title, themeSelector }) {
             {ListItemLink(<VideogameAssetIcon />, "Play", "/hangman/play")}
             {ListItemLink(<NotesIcon />, "Game History", "/hangman/history")}
           </List>
-          <Divider onClick={() => setExpanded(!expanded)} />
-          <List>{expanded ? <ExpandLess /> : <ExpandMore />}</List>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemText primary="Starred" />
-              </ListItemButton>
-            </List>
-          </Collapse>
+          <Divider />
         </Box>
       </Drawer>
     </>

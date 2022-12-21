@@ -78,6 +78,9 @@ export function HangmanPage() {
   const handleEndOfGameClose = () => {
     gameDivRef.current.style.filter = "";
     setEndOfGameoverlayOpen(false);
+    if (gameState.hasFinished) {
+      getWordAndCreateGame();
+    }
   };
   const handleEndOfGameToggle = () => {
     if (endOfGameoverlayOpen) {
@@ -132,6 +135,9 @@ export function HangmanPage() {
   }
 
   const keyPressCallback = (event, character) => {
+    if (hangmanInstance.current == null) {
+      return;
+    }
     if (gameState.hasFinished) {
       return;
     }
@@ -282,7 +288,6 @@ export function HangmanPage() {
       <Backdrop
         key="gameOverBackdrop"
         sx={{
-          height: "100%",
           background: "rgb(22,1,18)",
           background:
             "linear-gradient(0deg, rgba(22,1,18,0.9084677816439075) 3%, rgba(0,0,0,0.7011848684786415) 14%, rgba(3,0,3,0.27821550983674714) 47%, rgba(4,0,4,0.9280754538143382) 93%, rgba(19,1,16,1) 100%)",
